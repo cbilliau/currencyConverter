@@ -8,3 +8,10 @@ addons:
     - mongodb-3.2-precise
     packages:
     - mongodb-org-server
+deploy:
+  provider: heroku
+  api_key:
+    secure: GxSieajABRW/7dGgPSxn3VMh90xoaOFzIk6bQuMpZd5kBVSVY/leK7Djdm/6a+s6DdmGJnq/UtKZdzTZUg76y+MsMtuGRPGB5DFKwk036zvZBBEWqRIbSymKuax9Cck8z/0zhViUm2BL8Jdue8FSiKQa97FwWOXf1qaLSSq2E9Rytvf+TcAAihH13TjRG8zv5RMqZyOeoEgHwgdOfP0E+vbsyrb7v1F5TPGau9le4glVQCrq4FMgK9DiJznYhQPyxG5S0NT3HXpwXwCq5fToiwSxTtvb7vzdyvjz01wB73Pkmy2DFjGUwWT18JcgkaPW4xWJ4XYWvqr3/QipzSexiyAIhsaZiY7RjMdE+R7RgziCj06pscVRvzPeSZ9r42M8SE1LGAqJIoOtoKAoReaPn0gfteirrKycu3Lt0Ue4k092qmszZz2eD6J+jIg7tQEIPg0pi+ojVKMfiMEA5ojkesivI8QczDw0Wf15JeCt3f/RZjLAEh7vPjNbuuPahMmlbRTGMp14pvCJfM0toIvSXmFz2/7mgVXatBGIhpJ2n59xeRgcEQiwfcJAuXZZ2sNVzOgsWq2fbOseXimKo3N8+s4KPpZMf9G9uta2fyWsb3jPbpZ15YN3bWNuebvP66JzgIKLYA3IbhLxgmrZcVH5zuYdPbRKkJ1uS+y/TA3a+Mc=
+  app: ancient-refuge-28583
+  on:
+    repo: cbilliau/currencyConverter
