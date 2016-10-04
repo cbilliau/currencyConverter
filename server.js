@@ -1,7 +1,22 @@
+// setup
 var express = require('express');
 var app = express();
-app.use(express.static('public'));
-app.listen(process.env.PORT || 8080);
 
+
+// config
+app.use(express.static('public'));
+
+
+// define model
+
+
+// listen
+app.listen(process.env.PORT || 8080);
+console.log('App listening on port 8080');
+
+
+// routes
+
+
+// export
 exports.app = app;
-// exports.storage = storage;
