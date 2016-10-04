@@ -5,7 +5,7 @@ var app = express();
 
 // config
 app.use(express.static('public'));
-
+app.use(express.static('node_modules'));
 
 // define model
 
