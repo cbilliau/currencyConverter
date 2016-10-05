@@ -1,30 +1,4 @@
-var currencyApp = angular.module('currencyApp', []).controller('mainController', mainController);
-
-var MOCK_DATA = {
-    'userCurrencies': [
-        {
-            'id': '11111',
-            'flag': 'AMD',
-            'currency': 'Armenian Dram',
-            'history30Day': '...',
-            'rate': '1.064'
-        }, {
-            'id': '22222',
-            'flag': 'PYG',
-            'currency': 'Paraguayan Guarani',
-            'history30Day': '...',
-            'rate': '0.974'
-        }, {
-            'id': '33333',
-            'flag': 'UGX',
-            'currency': 'Ugandan Shilling',
-            'history30Day': '...',
-            'rate': '1.299'
-        }
-    ]
-};
-
-var countriesList = {
+{
     AED: "United Arab Emirates Dirham",
     AFN: "Afghan Afghani",
     ALL: "Albanian Lek",
@@ -194,16 +168,3 @@ var countriesList = {
     ZMW: "Zambian Kwacha",
     ZWL: "Zimbabwean Dollar"
 };
-
-function mainController($scope, $http) {
-
-
-// gather MOCK_DATA - replace with get
-function pushMockDataToScope(data, countriesList) {
-    $scope.userData = data.userCurrencies;
-    $scope.countries = countriesList;
-}
-
-pushMockDataToScope(MOCK_DATA, countriesList);
-
-}
