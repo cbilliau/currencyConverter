@@ -13,7 +13,7 @@
 
 <!-- User's currency rates -->
 <div class="pure-g custom-text-center" ng-repeat="data in userData">
-  <div class="pure-u-1-7"><p>{{ data.flag }} </p></div>
+  <img class="pure-u-1-7 flag" src='http://www.geonames.org/flags/x/{{ data.flag | lowercase | limitTo:2 }}.gif'/>
   <div class="pure-u-1-7"><p>{{ data.currency }}</p></div>
   <div class="pure-u-1-7"><p>{{ data.history30Day }}</p></div>
   <div class="pure-u-1-7"><p>{{ data.rate | number }}</p></div>

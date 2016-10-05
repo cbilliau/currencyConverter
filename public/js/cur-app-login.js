@@ -10,6 +10,12 @@ viewsModule.config(['$routeProvider', function($routeProvider) {
         .otherwise('/error');
 }]);
 
-viewsModule.controller('LoginCtrl', ['$scope', function($scope) {
-
+viewsModule.controller('LoginCtrl', ['$scope', '$location', function($scope, $location) {
+  $scope.submit = function(){
+    var username = $scope.username;
+    var password = $scope.password;
+    if($scope.username == 'admin' && $scope.password == 'admin') {
+      $location.path('/main');
+    }
+  }
 }]);

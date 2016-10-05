@@ -1,7 +1,9 @@
-<div class="">
-  <form id="myLogin" class="pure-form pure-form-stacked" action="/" method="post">
-    Username: <input type="text" name="username" id="username">
-    Password: <input type="password" name="password" id="password">
-    <button type="submit" class="pure-button pure-button-primary">Sign in</button>
-  </form>
+<div ng-comtroller="LoginCtrl">
+    <form action="/" id="myLogin" class="pure-form pure-form-stacked" method="">
+        Username:
+        <input type="text" id="username" ng-model="username">
+        Password:
+        <input type="password" id="password" ng-model="password">
+        <button type="button" ng-click="submit()" class="pure-button pure-button-primary">Sign in</button>
+    </form>
 </div>

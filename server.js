@@ -10,12 +10,16 @@ app.use(express.static('node_modules'));
 // define model
 
 
+// routes
+
+// application
+app.get('*', function(req, res) {
+        res.sendfile('./public/login.html'); 
+    });
+
 // listen
 app.listen(process.env.PORT || 8080);
 console.log('App listening on port 8080');
-
-
-// routes
 
 
 // export
