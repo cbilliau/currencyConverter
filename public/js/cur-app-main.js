@@ -1,7 +1,7 @@
 viewsModule.config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/main', {
           templateUrl: './main.html',
-          controller: 'CountriesCtrl'
+          controller: 'MainController'
       })
       .when('/error', {
           template: '<p>Error - Page Not Found</p>'
