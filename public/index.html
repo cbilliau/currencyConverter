@@ -9,12 +9,15 @@
   </head>
 
   <body ng-controller="mainController">
+
+    <!-- Menu Bar -->
     <div class="custom-menu-wrapper">
       <div class="pure-menu pure-menu-horizontal">
           <p class="pure-menu-heading ">Current-c</p>
       </div>
     </div>
 
+    <!-- Column Headers -->
     <div class="pure-g custom-text-center">
         <div class="pure-u-1-7"><p>Flag</p></div>
         <div class="pure-u-1-7"><p>Currency</p></div>
@@ -27,6 +30,7 @@
 
     <hr>
 
+    <!-- User's currency rates -->
     <div class="pure-g custom-text-center" ng-repeat="data in userData">
       <div class="pure-u-1-7"><p>{{ data.flag }} </p></div>
       <div class="pure-u-1-7"><p>{{ data.currency }}</p></div>
@@ -37,6 +41,7 @@
       <div class="pure-u-1-7"><button class="button-small pure-button pure-button-primary">Remove</button></div>
     </div>
 
+    <!-- Add currency button -->
     <div class="pure-u-1">
       <select class="button-large pure-button"
       ng-model="currency"
@@ -45,6 +50,7 @@
       </select>
     </div>
 
+    <!-- scripts -->
     <script src="/angular/angular.min.js"></script>
     <script src="/angular-animate/angular-animate.min.js"></script>
     <script src="/angular-route/angular-route.min.js"></script>
