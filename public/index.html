@@ -30,9 +30,9 @@
       <div class="pure-u-1-6"><p>{{ data.flag }} </p></div>
       <div class="pure-u-1-6"><p>{{ data.currency }}</p></div>
       <div class="pure-u-1-6"><p>{{ data.history30Day }}</p></div>
-      <div class="pure-u-1-6"><p ng-model='rate'>{{ data.rate | number }}</p></div>
+      <div class="pure-u-1-6"><p>{{ data.rate | number }}</p></div>
       <div class="pure-u-1-6">$ <input ng-model='amount' placeholder="0.00" type="number"></div>
-      <div class="pure-u-1-6"><p>$$ {{ amount * rate }}</p></div>
+      <div class="pure-u-1-6"><p>{{ amount * data.rate | currency}}</p></div>
 
     </div>
 
