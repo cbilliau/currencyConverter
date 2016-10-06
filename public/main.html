@@ -18,7 +18,7 @@
   <div class="pure-u-1-7"><p>{{ data.history30Day }}</p></div>
   <div class="pure-u-1-7"><p>{{ data.rate | number }}</p></div>
   <div class="pure-u-1-7"><input ng-model='amount' placeholder="0.00" type="number"></div>
-  <div class="pure-u-1-7"><p>{{ amount * data.rate | currency}}</p></div>
+  <div class="pure-u-1-7"><p>{{ amount / data.rate | currency}}</p></div>
   <div class="pure-u-1-7"><button class="button-small button-secondary pure-button">Remove</button></div>
 </div>
 

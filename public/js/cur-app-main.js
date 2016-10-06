@@ -10,13 +10,19 @@ viewsModule.config([
 
 viewsModule.controller('MainController', [
     '$scope',
-    'pullUsersCountryCodes',
-    'getCurrencyQuotes',
-    function($scope, pullUsersCountryCodes, getCurrencyQuotes) {
+    'curCountriesList',
+    'pullUsersCurCodes',
+    'getCurQuotes',
+    'setUserQuotes',
+    'updateCurrencies',
+    function($scope, curCountriesList, pullUsersCurCodes, getCurQuotes, setUserQuotes, updateCurrencies) {
 
-        // Define variables
-        $scope.userData;
-        $scope.currencyCodes;
+// Isuue with express serving json file.
+      // curCountriesList()
+      //   .then(function(countriesList) {
+      //     $scope.countries = countriesList;
+      //     console.log($scope.countries);
+      //   });
 
         // ========== Mock ==================
         var MOCK_DATA = {
@@ -26,23 +32,23 @@ viewsModule.controller('MainController', [
                     'flag': 'AMD',
                     'currency': 'Armenian Dram',
                     'history30Day': '...',
-                    'rate': '1.064'
+                    'rate': ''
                 }, {
                     'id': '22222',
                     'flag': 'PYG',
                     'currency': 'Paraguayan Guarani',
                     'history30Day': '...',
-                    'rate': '0.974'
+                    'rate': ''
                 }, {
                     'id': '33333',
                     'flag': 'UGX',
                     'currency': 'Ugandan Shilling',
                     'history30Day': '...',
-                    'rate': '1.299'
+                    'rate': ''
                 }
             ]
         };
-
+        // using this var for country codes until getting json file can be resolved
         var countriesList = {
             AED: "United Arab Emirates Dirham",
             AFN: "Afghan Afghani",
@@ -213,30 +219,20 @@ viewsModule.controller('MainController', [
             ZMW: "Zambian Kwacha",
             ZWL: "Zimbabwean Dollar"
         };
-
         // gather MOCK_DATA - replace with get
-        function pushMockDataToScope(data, countriesList) {
-            $scope.userData = data.userCurrencies;
-            $scope.countries = countriesList;
+        function pushMockDataToScope(data, countries) {
+            $scope.userRawData = data.userCurrencies;
+            $scope.countries = countries;
         }
         pushMockDataToScope(MOCK_DATA, countriesList);
         // ==========
 
-        // get user data from db placeholder and set as $scope var
+        // PLACEHOLDER to get user data from db
         // $http.get() -- $scope.userData = {data from pulled from db};
 
-
-        $scope.currencyCodes = pullUsersCountryCodes($scope.userData);
-
-        $scope.currencyQuotes = getCurrencyQuotes($scope.currencyCodes);
-
-
-
-        // take $scope var from get and send three letter codes in var to api
-        // getUserExchRates($scope.currencyCodes)
-          // .then(function(rates) {
-            // $scope.rates = rates.quotes;
-            // assign $scope.rates to userData.rates
-          // })
+        $scope.curCodes = pullUsersCurCodes($scope.userRawData);
+        $scope.updateCur = updateCurrencies($scope.curCodes, $scope.userRawData).then(function(response) {
+            $scope.userData = response;
+        });
     }
 ]);

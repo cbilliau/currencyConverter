@@ -1,20 +1,26 @@
 angular.module('curAppLib', [])
 
 // API constants
-    .constant('CUR_API_PREFIX', 'http://apilayer.net/api/')
-    .constant('CUR_API_ENDPOINT_LIVE', 'live')
-    .constant('CUR_API_ENDPOINT_HISTORICAL', 'historical')
-    .constant('CUR_API_KEY', '?access_key=6bd7e9293254526403d839455fcb946c&currencies=AUD,EUR,GBP,PLN&format=1')
+    .constant('CUR_API_PREFIX', 'http://apilayer.net/api/').constant('CUR_API_ENDPOINT_LIVE', 'live').constant('CUR_API_ENDPOINT_HISTORICAL', 'historical').constant('CUR_API_KEY', '?access_key=6bd7e9293254526403d839455fcb946c&currencies=AUD,EUR,GBP,PLN&format=1')
+    .constant('CUR_COUNTRIES_LIST', './countriesList.json')
 
-/* Steps to getting a user's rates
-  1. get user's saved three letter currency code choices (factory)
-  2. call api with user's curr codes / recieve rates (factory)
-  3. combine recieved rates with user data (controller)
-  4. expose user data to scope (controller)
-  */
+// get countries list from json file
+    .factory('curCountriesList', [
+    '$http',
+    '$q',
+    'CUR_COUNTRIES_LIST',
+    function($http, $q, CUR_COUNTRIES_LIST) {
+        return function() {
+            return $http.get('CUR_COUNTRIES_LIST', {cache: true})
+            .then(function(response) {
+                return $q.when(response.data);
+            })
+        }
+    }
+])
 
-// 1. get user's saved three letter currency code choices (factory)
-    .factory('pullUsersCountryCodes', function() {
+// get user's saved three letter currency code choices
+    .factory('pullUsersCurCodes', function() {
     return function(data) {
         var codes = [];
         for (index in data) {
@@ -24,8 +30,8 @@ angular.module('curAppLib', [])
     }
 })
 
-// 2. call api with user's curr codes / recieve rates (factory)
-    .factory('getCurrencyQuotes', [
+// call api with user's curr codes / recieve rates
+    .factory('getCurQuotes', [
     '$http',
     '$q',
     'CUR_API_PREFIX',
@@ -33,16 +39,42 @@ angular.module('curAppLib', [])
     'CUR_API_KEY',
     function($http, $q, CUR_API_PREFIX, CUR_API_ENDPOINT_LIVE, CUR_API_KEY) {
         return function(codes) {
-
-          return $http({
-            method: 'GET',
-            url: CUR_API_PREFIX + CUR_API_ENDPOINT_LIVE + CUR_API_KEY + '&currencies=' + codes,
-            datatype: 'jsonp'
-          }).
-          then(function(response) {
-            console.log(response);
-            return $q.when(response.data);
-          });
+            return $http({
+                method: 'GET',
+                url: CUR_API_PREFIX + CUR_API_ENDPOINT_LIVE + CUR_API_KEY + '&currencies=' + codes,
+                datatype: 'jsonp'
+            }).then(function(response) {
+                // push quotes obj into 'quotes' arr
+                var quotes = [];
+                for (val in response.data.quotes) {
+                    quotes.push(response.data.quotes[val]);
+                }
+                return $q.when(quotes);
+            });
         };
     }
-]);
+])
+// combine recieved rates with user data
+    .factory('setUserQuotes', function() {
+    return function(quotes, data) {
+        for (index in data) {
+            data[index].rate = quotes[index];
+        }
+        return data;
+    }
+})
+// update currencies function
+    .factory('updateCurrencies', [
+    'getCurQuotes',
+    'setUserQuotes',
+    function(getCurQuotes, setUserQuotes) {
+        return function(currencyCodes, data) {
+            return getCurQuotes(currencyCodes).then(function(quotesRes) {
+                quotes = quotesRes;
+                updatedData = setUserQuotes(quotes, data);
+                console.log(updatedData);
+                return updatedData;
+            })
+        }
+    }
+])
