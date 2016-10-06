@@ -12,8 +12,8 @@
 }
 
 .flag {
-  height: 1em;
-  width: 10%;
+  height: 10px;
+  width: 10px;
   /*-moz-transform:scale(0.1);
   -webkit-transform:scale(0.10);
   transform:scale(0.1);*/
