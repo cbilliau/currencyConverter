@@ -15,29 +15,16 @@ viewsModule.controller('MainController', [
     'getCurQuotes',
     'setUserQuotes',
     'updateCurrencies',
-    function($scope, curCountriesList, pullUsersCurCodes, getCurQuotes, setUserQuotes, updateCurrencies) {
+    'addCurency',
+    function($scope, curCountriesList, pullUsersCurCodes, getCurQuotes, setUserQuotes, updateCurrencies, addCurency) {
 
+        // Grab json file of countries list
         // Isuue with express serving json file.
         // curCountriesList()
         //   .then(function(countriesList) {
         //     $scope.countries = countriesList;
         //     console.log($scope.countries);
         //   });
-
-        // currency obj constructor
-        function userCurrency(flag, currency) {
-            this._id = null,
-            this.flag = flag,
-            this.currency = currency,
-            this.history30Day = '',
-            this.rate = null
-        }
-
-        // cache object
-        var Data = {
-            userCurrencies: [],
-            username: ''
-        }
 
         // ================= Mock ========================
         var MOCK_DATA = [
@@ -247,19 +234,24 @@ viewsModule.controller('MainController', [
         pushDataToScope(Data, countriesList);
         // ===============================================
 
+        // ================ View =========================
+
+        // create cache object
+        Data = {
+            userCurrencies: [],
+            username: ''
+        }
+
         // PLACEHOLDER to get user data from db
-        // $http.get() -- $scope.userData = {data from pulled from db};
 
         $scope.curCodes = pullUsersCurCodes($scope.userRawData);
         $scope.updateCur = updateCurrencies($scope.curCodes, $scope.userRawData).then(function(response) {
             $scope.userData = response;
         });
-        $scope.currencyItem = [];
-        $scope.currencyItemAdd = function() {
 
-            console.log($scope.currencyItem);
-
-            // code to add selected currency to user account and display
+        // add currency to Data cache
+        $scope.currencyItemAdd = function($event) {
+            addCurency($scope.currencyItem, Data);
         }
     }
 ]);
