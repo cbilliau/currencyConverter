@@ -16,7 +16,8 @@ viewsModule.controller('MainController', [
     'setUserQuotes',
     'updateCurrencies',
     'addCurency',
-    function($scope, curCountriesList, pullUsersCurCodes, getCurQuotes, setUserQuotes, updateCurrencies, addCurency) {
+    'removeCurrency',
+    function($scope, curCountriesList, pullUsersCurCodes, getCurQuotes, setUserQuotes, updateCurrencies, addCurency, removeCurrency) {
 
         // Grab json file of countries list
         // Isuue with express serving json file.
@@ -25,6 +26,11 @@ viewsModule.controller('MainController', [
         //     $scope.countries = countriesList;
         //     console.log($scope.countries);
         //   });
+
+        Data = {
+            userCurrencies: [],
+            username: ''
+        }
 
         // ================= Mock ========================
         var MOCK_DATA = [
@@ -237,10 +243,7 @@ viewsModule.controller('MainController', [
         // ================ View =========================
 
         // create cache object
-        Data = {
-            userCurrencies: [],
-            username: ''
-        }
+
 
         // PLACEHOLDER to get user data from db
 
@@ -250,8 +253,14 @@ viewsModule.controller('MainController', [
         });
 
         // add currency to Data cache
-        $scope.currencyItemAdd = function($event) {
-            addCurency($scope.currencyItem, Data);
+        $scope.currencyAdd = function($event) {
+            addCurency($scope.currencyItemAdd, Data);
+        }
+
+        // remove currency from Data cache
+        $scope.currencyRemove = function(currencyItem) {
+          console.log(currencyItem);
+            removeCurrency(currencyItem, Data);
         }
     }
 ]);

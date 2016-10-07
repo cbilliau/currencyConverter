@@ -1,11 +1,7 @@
 angular.module('curAppLib', [])
 
 // API constants
-    .constant('CUR_API_PREFIX', 'http://apilayer.net/api/')
-    .constant('CUR_API_ENDPOINT_LIVE', 'live')
-    .constant('CUR_API_ENDPOINT_HISTORICAL', 'historical')
-    .constant('CUR_API_KEY', '?access_key=6bd7e9293254526403d839455fcb946c&currencies=AUD,EUR,GBP,PLN&format=1')
-    .constant('CUR_COUNTRIES_LIST', './countriesList.json')
+    .constant('CUR_API_PREFIX', 'http://apilayer.net/api/').constant('CUR_API_ENDPOINT_LIVE', 'live').constant('CUR_API_ENDPOINT_HISTORICAL', 'historical').constant('CUR_API_KEY', '?access_key=6bd7e9293254526403d839455fcb946c&currencies=AUD,EUR,GBP,PLN&format=1').constant('CUR_COUNTRIES_LIST', './countriesList.json')
 
 // get countries list from json file
     .factory('curCountriesList', [
@@ -98,18 +94,35 @@ angular.module('curAppLib', [])
         }
 
         // return updated userData to $scope after adding currency
-        return function(currencyItem, Data) {
-            console.log(currencyItem);
-            let newCurrency = currencyItem;
-            let currency = newCurrency.substring(3);
-            let flag = newCurrency.slice(0, 3);
+        return function(currencyItem, data) {
+            let currency = currencyItem.substring(3);
+            let flag = currencyItem.slice(0, 3);
             let currencyToAdd = new userCurrency(flag, currency);
             console.log(currencyToAdd);
-            Data.userCurrencies.push(currencyToAdd);
-            let newCodes = pullUsersCurCodes(Data.userCurrencies);
-            updateCurrencies(newCodes, Data.userCurrencies).then(function(response) {
+            data.userCurrencies.push(currencyToAdd);
+            let newCodes = pullUsersCurCodes(data.userCurrencies);
+            updateCurrencies(newCodes, data.userCurrencies).then(function(response) {
                 userData = response;
             });
+        }
+    }
+])
+
+// remove currency from cache
+    .factory('removeCurrency', [
+    'pullUsersCurCodes',
+    'updateCurrencies',
+    function(pullUsersCurCodes, updateCurrencies) {
+        return function(currencyItem, data) {
+            for (index in data.userCurrencies) {
+                if (data.userCurrencies[index].flag.indexOf(currencyItem.flag) == 0) {
+                    data.userCurrencies.splice(index, 1);
+                    let newCodes = pullUsersCurCodes(data.userCurrencies);
+                    updateCurrencies(newCodes, data.userCurrencies).then(function(response) {
+                        return userData = response;
+                    });
+                }
+            }
         }
     }
 ])

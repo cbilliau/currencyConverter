@@ -12,21 +12,21 @@
 <hr>
 
 <!-- User's currency rates -->
-<div class="pure-g custom-text-center" ng-repeat="data in userData">
+<div ng-repeat="data in userData" class="pure-g custom-text-center">
   <img class="pure-u-1-7 flag" src='http://www.geonames.org/flags/x/{{ data.flag | lowercase | limitTo:2 }}.gif'/>
   <div class="pure-u-1-7"><p>{{ data.currency }}</p></div>
   <div class="pure-u-1-7"><p>{{ data.history30Day }}</p></div>
   <div class="pure-u-1-7"><p>{{ data.rate | number }}</p></div>
   <div class="pure-u-1-7"><input ng-model='amount' placeholder="0.00" type="number"></div>
   <div class="pure-u-1-7"><p>{{ amount / data.rate | currency}}</p></div>
-  <div class="pure-u-1-7"><button class="button-small button-secondary pure-button">Remove</button></div>
+  <div class="pure-u-1-7"><button class="button-small button-secondary pure-button" ng-model="currencyItemRemove" ng-click="currencyRemove(data)">Remove</button></div>
 </div>
 
 <!-- Add currency button -->
 <div class="pure-u-1">
   <select class="button-large pure-button"
-  ng-model="currencyItem"
-  ng-change="currencyItemAdd()"
+  ng-model="currencyItemAdd"
+  ng-change="currencyAdd()"
   ng-options="key + value as value for (key, value) in countries track by key">
     <option value="">Add Currency</option>
   </select>
