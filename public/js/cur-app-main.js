@@ -27,6 +27,7 @@ viewsModule.controller('MainController', [
         //     console.log($scope.countries);
         //   });
 
+        // create cache object
         Data = {
             userCurrencies: [],
             username: ''
@@ -242,11 +243,9 @@ viewsModule.controller('MainController', [
 
         // ================ View =========================
 
-        // create cache object
-
-
         // PLACEHOLDER to get user data from db
 
+        // set up initial view
         $scope.curCodes = pullUsersCurCodes($scope.userRawData);
         $scope.updateCur = updateCurrencies($scope.curCodes, $scope.userRawData).then(function(response) {
             $scope.userData = response;
