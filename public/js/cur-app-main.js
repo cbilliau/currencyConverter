@@ -17,38 +17,50 @@ viewsModule.controller('MainController', [
     'updateCurrencies',
     function($scope, curCountriesList, pullUsersCurCodes, getCurQuotes, setUserQuotes, updateCurrencies) {
 
-// Isuue with express serving json file.
-      // curCountriesList()
-      //   .then(function(countriesList) {
-      //     $scope.countries = countriesList;
-      //     console.log($scope.countries);
-      //   });
+        // Isuue with express serving json file.
+        // curCountriesList()
+        //   .then(function(countriesList) {
+        //     $scope.countries = countriesList;
+        //     console.log($scope.countries);
+        //   });
 
-        // ========== Mock ==================
-        var MOCK_DATA = {
-            'userCurrencies': [
-                {
-                    'id': '11111',
-                    'flag': 'AMD',
-                    'currency': 'Armenian Dram',
-                    'history30Day': '...',
-                    'rate': ''
-                }, {
-                    'id': '22222',
-                    'flag': 'PYG',
-                    'currency': 'Paraguayan Guarani',
-                    'history30Day': '...',
-                    'rate': ''
-                }, {
-                    'id': '33333',
-                    'flag': 'UGX',
-                    'currency': 'Ugandan Shilling',
-                    'history30Day': '...',
-                    'rate': ''
-                }
-            ]
-        };
-        // using this var for country codes until getting json file can be resolved
+        // currency obj constructor
+        function userCurrency(flag, currency) {
+            this._id = null,
+            this.flag = flag,
+            this.currency = currency,
+            this.history30Day = '',
+            this.rate = null
+        }
+
+        // cache object
+        var Data = {
+            userCurrencies: [],
+            username: ''
+        }
+
+        // ================= Mock ========================
+        var MOCK_DATA = [
+            {
+                'id': '11111',
+                'flag': 'AMD',
+                'currency': 'Armenian Dram',
+                'history30Day': '...',
+                'rate': ''
+            }, {
+                'id': '22222',
+                'flag': 'PYG',
+                'currency': 'Paraguayan Guarani',
+                'history30Day': '...',
+                'rate': ''
+            }, {
+                'id': '33333',
+                'flag': 'UGX',
+                'currency': 'Ugandan Shilling',
+                'history30Day': '...',
+                'rate': ''
+            }
+        ];
         var countriesList = {
             AED: "United Arab Emirates Dirham",
             AFN: "Afghan Afghani",
@@ -218,14 +230,22 @@ viewsModule.controller('MainController', [
             ZMK: "Zambian Kwacha (pre-2013)",
             ZMW: "Zambian Kwacha",
             ZWL: "Zimbabwean Dollar"
-        };
-        // gather MOCK_DATA - replace with get
-        function pushMockDataToScope(data, countries) {
+        }; //
+
+        function pushMockToDataCache(data) {
+            for (i = 0; i < data.length; i++) {
+                Data.userCurrencies.push(data[i]);
+            }
+        }
+        function pushDataToScope(data, countries) {
             $scope.userRawData = data.userCurrencies;
             $scope.countries = countries;
         }
-        pushMockDataToScope(MOCK_DATA, countriesList);
-        // ==========
+        // put mockdata into cache
+        pushMockToDataCache(MOCK_DATA);
+        // expose cache to scope
+        pushDataToScope(Data, countriesList);
+        // ===============================================
 
         // PLACEHOLDER to get user data from db
         // $http.get() -- $scope.userData = {data from pulled from db};
@@ -234,5 +254,12 @@ viewsModule.controller('MainController', [
         $scope.updateCur = updateCurrencies($scope.curCodes, $scope.userRawData).then(function(response) {
             $scope.userData = response;
         });
+        $scope.currencyItem = [];
+        $scope.currencyItemAdd = function() {
+
+            console.log($scope.currencyItem);
+
+            // code to add selected currency to user account and display
+        }
     }
 ]);

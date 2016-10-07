@@ -1,8 +1,7 @@
 angular.module('curAppLib', [])
 
 // API constants
-    .constant('CUR_API_PREFIX', 'http://apilayer.net/api/').constant('CUR_API_ENDPOINT_LIVE', 'live').constant('CUR_API_ENDPOINT_HISTORICAL', 'historical').constant('CUR_API_KEY', '?access_key=6bd7e9293254526403d839455fcb946c&currencies=AUD,EUR,GBP,PLN&format=1')
-    .constant('CUR_COUNTRIES_LIST', './countriesList.json')
+    .constant('CUR_API_PREFIX', 'http://apilayer.net/api/').constant('CUR_API_ENDPOINT_LIVE', 'live').constant('CUR_API_ENDPOINT_HISTORICAL', 'historical').constant('CUR_API_KEY', '?access_key=6bd7e9293254526403d839455fcb946c&currencies=AUD,EUR,GBP,PLN&format=1').constant('CUR_COUNTRIES_LIST', './countriesList.json')
 
 // get countries list from json file
     .factory('curCountriesList', [
@@ -11,8 +10,7 @@ angular.module('curAppLib', [])
     'CUR_COUNTRIES_LIST',
     function($http, $q, CUR_COUNTRIES_LIST) {
         return function() {
-            return $http.get('CUR_COUNTRIES_LIST', {cache: true})
-            .then(function(response) {
+            return $http.get('CUR_COUNTRIES_LIST', {cache: true}).then(function(response) {
                 return $q.when(response.data);
             })
         }
@@ -72,7 +70,6 @@ angular.module('curAppLib', [])
             return getCurQuotes(currencyCodes).then(function(quotesRes) {
                 quotes = quotesRes;
                 updatedData = setUserQuotes(quotes, data);
-                console.log(updatedData);
                 return updatedData;
             })
         }
