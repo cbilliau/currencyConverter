@@ -1,13 +1,3 @@
-viewsModule.config([
-    '$routeProvider',
-    function($routeProvider) {
-        $routeProvider.when('/main', {
-            templateUrl: './main.html',
-            controller: 'MainController'
-        }).when('/error', {template: '<p>Error - Page Not Found</p>'}).otherwise('/error');
-    }
-]);
-
 viewsModule.controller('MainController', [
     '$scope',
     'curCountriesList',
@@ -258,7 +248,6 @@ viewsModule.controller('MainController', [
 
         // remove currency from Data cache
         $scope.currencyRemove = function(currencyItem) {
-          console.log(currencyItem);
             removeCurrency(currencyItem, Data);
         }
     }

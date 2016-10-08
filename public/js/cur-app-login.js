@@ -1,35 +1,23 @@
-// routing and controller for login
-viewsModule.config([
-    '$routeProvider',
-    function($routeProvider) {
-        $routeProvider.when('/', {
-            templateUrl: './login.html',
-            controller: 'LoginCtrl'
-        }).when('/error', {template: '<p>Error - Page Not Found</p>'}).otherwise('/error');
-    }
-]);
-
-viewsModule.controller('LoginCtrl', [
+viewsModule.controller('LoginController', [
     '$scope',
-    '$http',
-    function($scope, $http) {
+    '$rootScope',
+    '$location',
+    'AuthenticationService',
+    function($scope, $rootScope, $location, AuthenticationService) {
 
-        $scope.submit = function() {
-            var username = $scope.username;
-            var password = $scope.password;
+        // reset login status
+        AuthenticationService.ClearCredentials();
 
-            $http({
-                url: '/users/' + username,
-                method: 'get',
-                dataType: 'json',
-                data: {
-                    username: username,
-                    password: password
+        $scope.login = function() {
+            $scope.dataLoading = true;
+            AuthenticationService.Login($scope.username, $scope.password, function(response) {
+                if (response.success) {
+                    AuthenticationService.SetCredentials($scope.username, $scope.password);
+                    $location.path('/');
+                } else {
+                    $scope.error = response.message;
+                    $scope.dataLoading = false;
                 }
-            }).success(function(data) {
-                console.log(data);
-                // How do I take the page sent back and render it?
-                $scope.main = data;
             })
         }
     }
