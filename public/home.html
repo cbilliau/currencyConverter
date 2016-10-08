@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang-"en" ng-app="curApp">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="/purecss/build/pure-min.css"/>
+        <link rel="stylesheet" type="text/css" href="/css/styles.css"/>
+        <title>Currency Converter</title>
+    </head>
+
+    <body ng-controller="MainController">
+
+        <!-- Menu Bar -->
+        <div class="custom-menu-wrapper">
+            <div class="pure-menu pure-menu-horizontal">
+                <p class="pure-menu-heading ">Current-c</p>
+            </div>
+        </div>
+
+        <div class="animate-view-container">
+            <div class="animate-view">
+                <div ng-view ng-class="{loading: isLoading}"></div>
+            </div>
+        </div>
+
+        <!-- scripts -->
+        <script src="/angular/angular.min.js"></script>
+        <script src="/angular-animate/angular-animate.min.js"></script>
+        <script src="/angular-route/angular-route.min.js"></script>
+        <script src="/angular-animate/angular-animate.min.js"></script>
+        <script src="./js/cur-app-lib.js"></script>
+        <script src="./js/cur-app-views.js"></script>
+        <script src="./js/cur-app-login.js"></script>
+        <script src="./js/cur-app-main.js"></script>
+        <script src="./js/cur-app.js"></script>
+    </body>
+</html>

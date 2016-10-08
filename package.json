@@ -12,10 +12,12 @@
     "angular": "^1.5.8",
     "angular-animate": "^1.5.8",
     "angular-route": "^1.5.8",
+    "body-parser": "^1.15.2",
     "chai": "^3.5.0",
     "chai-http": "^3.0.0",
     "express": "^4.14.0",
     "mocha": "^3.1.0",
+    "mongoose": "^4.6.3",
     "purecss": "^0.6.0"
   }
 }
