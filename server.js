@@ -3,6 +3,7 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var config = require('./config/config.js');
 var User = require('./models/users.js');
+var Currency = require('./models/currencies.js');
 var path = require('path');
 var app = express();
 
