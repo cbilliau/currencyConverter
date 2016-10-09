@@ -13,6 +13,7 @@
     "angular-animate": "^1.5.8",
     "angular-cookies": "^1.5.8",
     "angular-route": "^1.5.8",
+    "basic-auth": "^1.0.4",
     "body-parser": "^1.15.2",
     "chai": "^3.5.0",
     "chai-http": "^3.0.0",

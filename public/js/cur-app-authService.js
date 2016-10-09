@@ -11,24 +11,33 @@ angular.module('curAuthServ', []).factory('AuthenticationService', [
 
             /* Dummy authentication for testing, uses $timeout to simulate api call
              ----------------------------------------------*/
-            $timeout(function() {
-                var response = {
-                    success: username === 'test' && password === 'test'
-                };
-                if (!response.success) {
-                    response.message = 'Username or password is incorrect';
-                }
-                callback(response);
-            }, 1000);
+            // $timeout(function() {
+            //     var response = {
+            //         success: username === 'admin' && password === 'admin'
+            //     };
+            //     if (!response.success) {
+            //         response.message = 'Username or password is incorrect';
+            //     }
+            //     callback(response);
+            // }, 1000);
 
             /* Use this for real authentication
              ----------------------------------------------*/
-            //$http.post('/api/authenticate', { username: username, password: password })
-            //    .success(function (response) {
-            //        callback(response);
-            //    });
+            $http.post('/login', {
+                username: username,
+                password: password
+            }).success(function(response) {
+                callback(response);
+            });
 
         };
+
+        service.GetData = function(callback) {
+            $http.get('/login/data').success(function(response) {
+                console.log('you didnt f this up');
+                callback(response);
+            })
+        }
 
         service.SetCredentials = function(username, password) {
             var authdata = Base64.encode(username + ':' + password);
@@ -39,7 +48,6 @@ angular.module('curAuthServ', []).factory('AuthenticationService', [
                     authdata: authdata
                 }
             };
-
             $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata; // jshint ignore:line
             $cookies.put('globals', $rootScope.globals);
         };

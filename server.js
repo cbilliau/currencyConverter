@@ -1,4 +1,5 @@
 var express = require('express');
+var basicAuth = require('basic-auth');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var config = require('./config/config.js');
@@ -12,15 +13,60 @@ app.use(bodyParser.json());
 app.use(express.static('public'));
 app.use(express.static('node_modules'));
 
-// routes
-app.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname + '/public/index.html'));
+// auth
+var auth = function(req, res, next) {
+    function unauthorized(res) {
+        res.set('WWW-Authenticate', 'Basic realm=Authorization Required');
+        return res.sendStatus(401);
+    };
+    var user = basicAuth(req);
+
+    if (!user || !user.name || !user.pass) {
+        return unauthorized(res);
+    };
+    if (user.name === 'admin' && user.pass === 'admin') {
+        return next();
+    } else {
+        return unauthorized(res);
+    };
+};
+
+app.post('/login', function(req, res) {
+    var username = req.body.username;
+    var password = req.body.password;
+    var user = new User({username: username, password: password});
+    var currency = new Currency({username: username, userCurrencies: []});
+    currency.save(function(err) {
+        if (err) {
+            // return res.status(500).json({message: 'Internal server error - currency'});
+        }
+        // return res.status(201).json({success: true});
+    });
+    user.save(function(err) {
+        if (err) {
+            // return res.status(500).json({message: 'Internal server error - user'});
+        }
+        // return res.status(201).json({success: true});
+    });
+
+    res.status(201).json({success: true});
 });
 
-app.get('/users/:username', function(req, res) {
-    console.log(req.params);
-    // req.params only contains username, not password
-    res.sendFile(path.join(__dirname + '/public/main.html'));
+app.get('/login/data', auth, function(req, res) {
+    console.log(req.headers);
+    // !!!!!!!! Need to get 'key' and then send into Curreny schema to get data HOW??
+    var key =
+    Currency.findOne({
+        'username': userName
+    }, function(err, user) {
+        if (err) {
+            return response.status(500).json({
+                message: 'Internal Server Error'
+            });
+        }
+        response.status(200).json(user);
+    });
+    res.status(201).json({success: true});
 });
 
 // server (db / http server)

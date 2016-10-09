@@ -11,5 +11,5 @@ viewsModule.config(['$routeProvider', function ($routeProvider) {
             templateUrl: './main.html'
         })
 
-        .otherwise({ redirectTo: '/login' });
+        .otherwise({ redirectTo: '/' });
 }])
