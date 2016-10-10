@@ -17,13 +17,33 @@ angular.module('curAppLib', [])
     }
 ])
 
+// dataShare service
+    .factory('dataShare', function($rootScope, $timeout) {
+    var service = {};
+    service.data = false;
+    service.sendData = function(data) {
+        this.data = data;
+        $timeout(function() {
+            $rootScope.$broadcast('data_shared');
+        }, 100);
+    };
+    service.getData = function() {
+        return this.data;
+    };
+    return service;
+})
+
 // get user's saved three letter currency code choices
     .factory('pullUsersCurCodes', function() {
     return function(data) {
+        console.log(data);
         var codes = [];
-        for (index in data) {
-            codes.push(data[index].flag);
+        if (data !== null) {
+          for (index in data) {
+              codes.push(data[index].flag);
+          }
         }
+        console.log(codes);
         return codes;
     }
 })
@@ -86,7 +106,6 @@ angular.module('curAppLib', [])
 
         // currency obj constructor
         function userCurrency(flag, currency) {
-            this._id = null,
             this.flag = flag,
             this.currency = currency,
             this.history30Day = '...',
@@ -100,9 +119,10 @@ angular.module('curAppLib', [])
             let currencyToAdd = new userCurrency(flag, currency);
             console.log(currencyToAdd);
             data.userCurrencies.push(currencyToAdd);
+            console.log(data.userCurrencies);
             let newCodes = pullUsersCurCodes(data.userCurrencies);
             updateCurrencies(newCodes, data.userCurrencies).then(function(response) {
-                userData = response;
+                $scope.userData = response;
             });
         }
     }

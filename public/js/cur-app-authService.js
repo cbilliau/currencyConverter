@@ -34,7 +34,6 @@ angular.module('curAuthServ', []).factory('AuthenticationService', [
 
         service.GetData = function(callback) {
             $http.get('/login/data').success(function(response) {
-                console.log('you didnt f this up');
                 callback(response);
             })
         }

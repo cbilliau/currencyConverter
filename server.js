@@ -24,7 +24,7 @@ var auth = function(req, res, next) {
     if (!user || !user.name || !user.pass) {
         return unauthorized(res);
     };
-    if (user.name === 'admin' && user.pass === 'admin') {
+    if (user.name === 'test00' && user.pass === 'test00') {
         return next();
     } else {
         return unauthorized(res);
@@ -52,7 +52,7 @@ app.post('/login', function(req, res) {
     res.status(201).json({success: true});
 });
 
-app.get('/login/data', auth, function(req, res) {
+app.get('/login/data', function(req, res) {
     // header looks like this: Basic base64encodeddata
     // we split to get the encoded data coming from angular
     var authHeaderB64 = req.headers.authorization.split(' ')[1];
@@ -62,20 +62,21 @@ app.get('/login/data', auth, function(req, res) {
     var authHeader = buffer.toString();
     console.log("decoded header with username and password: " + authHeader); //admin:admin
     // you now have the username and password and can query the currency model with the username
-    
-    // !!!!!!!! Need to get 'key' and then send into Curreny schema to get data HOW??
-    var key =
-    Currency.findOne({
-        'username': userName
+    var splitHeader = function(data) {
+        var arr = data.split(':');
+        return arr[0];
+    };
+    var username = splitHeader(authHeader);
+    // console.log(username);
+    var key = Currency.findOne({
+        'username': username
     }, function(err, user) {
         if (err) {
-            return response.status(500).json({
-                message: 'Internal Server Error'
-            });
+            return response.status(500).json({message: 'Internal Server Error'});
         }
-        response.status(200).json(user);
+        console.log('user = ' + user);
+        res.status(200).json(user);
     });
-    res.status(201).json({success: true});
 });
 
 // server (db / http server)

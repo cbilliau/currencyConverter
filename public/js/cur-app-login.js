@@ -3,7 +3,8 @@ viewsModule.controller('LoginController', [
     '$rootScope',
     '$location',
     'AuthenticationService',
-    function($scope, $rootScope, $location, AuthenticationService) {
+    'dataShare',
+    function($scope, $rootScope, $location, AuthenticationService, dataShare) {
 
         // reset login status
         AuthenticationService.ClearCredentials();
@@ -11,11 +12,10 @@ viewsModule.controller('LoginController', [
         $scope.login = function() {
             $scope.dataLoading = true;
             AuthenticationService.Login($scope.username, $scope.password, function(response) {
-                console.log(response.success);
                 if (response.success) {
                     AuthenticationService.SetCredentials($scope.username, $scope.password);
                     AuthenticationService.GetData(function(response) {
-                      console.log(response.success);
+                      dataShare.sendData(response); // share data with app
                       $location.path('/main');
                     });
                 } else {

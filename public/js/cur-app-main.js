@@ -7,18 +7,12 @@ viewsModule.controller('MainController', [
     'updateCurrencies',
     'addCurency',
     'removeCurrency',
-    function($scope, curCountriesList, pullUsersCurCodes, getCurQuotes, setUserQuotes, updateCurrencies, addCurency, removeCurrency) {
-
-        // Grab json file of countries list
-        // Isuue with express serving json file.
-        // curCountriesList()
-        //   .then(function(countriesList) {
-        //     $scope.countries = countriesList;
-        //     console.log($scope.countries);
-        //   });
+    'dataShare',
+    function($scope, curCountriesList, pullUsersCurCodes, getCurQuotes, setUserQuotes, updateCurrencies, addCurency, removeCurrency, dataShare) {
 
         // create cache object
         Data = {
+            _id: '',
             userCurrencies: [],
             username: ''
         }
@@ -216,39 +210,36 @@ viewsModule.controller('MainController', [
             ZWL: "Zimbabwean Dollar"
         }; //
 
-        function pushMockToDataCache(data) {
-            for (i = 0; i < data.length; i++) {
-                Data.userCurrencies.push(data[i]);
-            }
-        }
-        function pushDataToScope(data, countries) {
-            $scope.userRawData = data.userCurrencies;
-            $scope.countries = countries;
-        }
-        // put mockdata into cache
-        pushMockToDataCache(MOCK_DATA);
-        // expose cache to scope
-        pushDataToScope(Data, countriesList);
-        // ===============================================
-
         // ================ View =========================
 
-        // PLACEHOLDER to get user data from db
+        // recieve user data from login controller via dataShare service
+        $scope.$on('data_shared', function(){
+          $scope.data = dataShare.getData();
+          console.log($scope.data.userCurrencies);
 
-        // set up initial view
-        $scope.curCodes = pullUsersCurCodes($scope.userRawData);
-        $scope.updateCur = updateCurrencies($scope.curCodes, $scope.userRawData).then(function(response) {
-            $scope.userData = response;
-        });
+          // countries list
+          $scope.countries = countriesList;
 
-        // add currency to Data cache
-        $scope.currencyAdd = function($event) {
-            addCurency($scope.currencyItemAdd, Data);
-        }
+          if ($scope.data.userCurrencies == null) {
+            console.log('loading currencies...');
+            var curCodes = pullUsersCurCodes($scope.data.userCurrencies);
+            $scope.updateCur = updateCurrencies(curCodes, $scope.data.userCurrencies).then(function(response) {
+                $scope.userData = response;
+                // console.log(response);
+            });
+          }
 
-        // remove currency from Data cache
-        $scope.currencyRemove = function(currencyItem) {
-            removeCurrency(currencyItem, Data);
-        }
+          // add currency to Data cache
+          $scope.currencyAdd = function($event) {
+              addCurency($scope.currencyItemAdd, $scope.data);
+          }
+
+          // remove currency from Data cache
+          $scope.currencyRemove = function(currencyItem) {
+              removeCurrency(currencyItem, Data);
+          }
+        })
+
+
     }
 ]);
