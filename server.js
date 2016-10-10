@@ -53,7 +53,16 @@ app.post('/login', function(req, res) {
 });
 
 app.get('/login/data', auth, function(req, res) {
-    console.log(req.headers);
+    // header looks like this: Basic base64encodeddata
+    // we split to get the encoded data coming from angular
+    var authHeaderB64 = req.headers.authorization.split(' ')[1];
+    console.log("Base 64 encoded header: " + authHeaderB64);
+    // decode the encoded data
+    var buffer = new Buffer(authHeaderB64, 'base64')
+    var authHeader = buffer.toString();
+    console.log("decoded header with username and password: " + authHeader); //admin:admin
+    // you now have the username and password and can query the currency model with the username
+    
     // !!!!!!!! Need to get 'key' and then send into Curreny schema to get data HOW??
     var key =
     Currency.findOne({
