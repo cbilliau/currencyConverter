@@ -10,35 +10,6 @@ viewsModule.controller('MainController', [
     'dataShare',
     function($scope, curCountriesList, pullUsersCurCodes, getCurQuotes, setUserQuotes, updateCurrencies, addCurency, removeCurrency, dataShare) {
 
-        // create cache object
-        Data = {
-            _id: '',
-            userCurrencies: [],
-            username: ''
-        }
-
-        // ================= Mock ========================
-        var MOCK_DATA = [
-            {
-                'id': '11111',
-                'flag': 'AMD',
-                'currency': 'Armenian Dram',
-                'history30Day': '...',
-                'rate': ''
-            }, {
-                'id': '22222',
-                'flag': 'PYG',
-                'currency': 'Paraguayan Guarani',
-                'history30Day': '...',
-                'rate': ''
-            }, {
-                'id': '33333',
-                'flag': 'UGX',
-                'currency': 'Ugandan Shilling',
-                'history30Day': '...',
-                'rate': ''
-            }
-        ];
         var countriesList = {
             AED: "United Arab Emirates Dirham",
             AFN: "Afghan Afghani",
@@ -209,13 +180,12 @@ viewsModule.controller('MainController', [
             ZMW: "Zambian Kwacha",
             ZWL: "Zimbabwean Dollar"
         }; //
-
         // ================ View =========================
 
         // recieve user data from login controller via dataShare service
         $scope.$on('data_shared', function(){
           $scope.data = dataShare.getData();
-          console.log($scope.data.userCurrencies);
+          console.log($scope.data);
 
           // countries list
           $scope.countries = countriesList;
@@ -225,7 +195,6 @@ viewsModule.controller('MainController', [
             var curCodes = pullUsersCurCodes($scope.data.userCurrencies);
             $scope.updateCur = updateCurrencies(curCodes, $scope.data.userCurrencies).then(function(response) {
                 $scope.userData = response;
-                // console.log(response);
             });
           }
 

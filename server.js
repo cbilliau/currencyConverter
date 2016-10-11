@@ -1,36 +1,18 @@
-var express = require('express');
-var basicAuth = require('basic-auth');
-var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
-var config = require('./config/config.js');
-var User = require('./models/users.js');
-var Currency = require('./models/currencies.js');
-var path = require('path');
-var app = express();
+const express = require('express');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const config = require('./config/config.js');
+const User = require('./models/users.js');
+const Currency = require('./models/currencies.js');
+const path = require('path');
+const app = express();
 
 // config
 app.use(bodyParser.json());
 app.use(express.static('public'));
 app.use(express.static('node_modules'));
 
-// auth
-var auth = function(req, res, next) {
-    function unauthorized(res) {
-        res.set('WWW-Authenticate', 'Basic realm=Authorization Required');
-        return res.sendStatus(401);
-    };
-    var user = basicAuth(req);
-
-    if (!user || !user.name || !user.pass) {
-        return unauthorized(res);
-    };
-    if (user.name === 'test00' && user.pass === 'test00') {
-        return next();
-    } else {
-        return unauthorized(res);
-    };
-};
-
+// routes
 app.post('/login', function(req, res) {
     var username = req.body.username;
     var password = req.body.password;
@@ -48,7 +30,6 @@ app.post('/login', function(req, res) {
         }
         // return res.status(201).json({success: true});
     });
-
     res.status(201).json({success: true});
 });
 
@@ -67,7 +48,6 @@ app.get('/login/data', function(req, res) {
         return arr[0];
     };
     var username = splitHeader(authHeader);
-    // console.log(username);
     var key = Currency.findOne({
         'username': username
     }, function(err, user) {
@@ -78,6 +58,15 @@ app.get('/login/data', function(req, res) {
         res.status(200).json(user);
     });
 });
+
+app.get('/api/segment', function(){
+  // call api method here
+});
+
+// call api
+var layerApi = function(req, res){
+    // api call here
+};
 
 // server (db / http server)
 var runServer = function(callback) {

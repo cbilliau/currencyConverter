@@ -1,7 +1,11 @@
 angular.module('curAppLib', [])
 
 // API constants
-    .constant('CUR_API_PREFIX', 'http://apilayer.net/api/').constant('CUR_API_ENDPOINT_LIVE', 'live').constant('CUR_API_ENDPOINT_HISTORICAL', 'historical').constant('CUR_API_KEY', '?access_key=6bd7e9293254526403d839455fcb946c&currencies=AUD,EUR,GBP,PLN&format=1').constant('CUR_COUNTRIES_LIST', './countriesList.json')
+    .constant('CUR_API_PREFIX', 'http://apilayer.net/api/')
+    .constant('CUR_API_ENDPOINT_LIVE', 'live')
+    .constant('CUR_API_ENDPOINT_HISTORICAL', 'historical')
+    .constant('CUR_API_KEY', '?access_key=6bd7e9293254526403d839455fcb946c')
+    .constant('CUR_COUNTRIES_LIST', './countriesList.json')
 
 // get countries list from json file
     .factory('curCountriesList', [
@@ -39,9 +43,9 @@ angular.module('curAppLib', [])
         console.log(data);
         var codes = [];
         if (data !== null) {
-          for (index in data) {
-              codes.push(data[index].flag);
-          }
+            for (index in data) {
+                codes.push(data[index].flag);
+            }
         }
         console.log(codes);
         return codes;
@@ -59,7 +63,7 @@ angular.module('curAppLib', [])
         return function(codes) {
             return $http({
                 method: 'GET',
-                url: CUR_API_PREFIX + CUR_API_ENDPOINT_LIVE + CUR_API_KEY + '&currencies=' + codes,
+                url: CUR_API_PREFIX + CUR_API_ENDPOINT_LIVE + CUR_API_KEY + '&currencies=' + codes + '&format=1',
                 datatype: 'jsonp'
             }).then(function(response) {
                 // push quotes obj into 'quotes' arr
@@ -75,11 +79,12 @@ angular.module('curAppLib', [])
 
 // combine recieved rates with user data
     .factory('setUserQuotes', function() {
-    return function(quotes, data) {
-        for (index in data) {
-            data[index].rate = quotes[index];
+    return function(quotes, userCurrencies) {
+        for (index in userCurrencies) {
+            userCurrencies[index].rate = quotes[index];
         }
-        return data;
+        console.log(userCurrencies);
+        return userCurrencies;
     }
 })
 
@@ -88,10 +93,12 @@ angular.module('curAppLib', [])
     'getCurQuotes',
     'setUserQuotes',
     function(getCurQuotes, setUserQuotes) {
-        return function(currencyCodes, data) {
+        return function(currencyCodes, userCurrencies) {
+
+            // call api with 3 ltr currency codes
             return getCurQuotes(currencyCodes).then(function(quotesRes) {
                 quotes = quotesRes;
-                updatedData = setUserQuotes(quotes, data);
+                updatedData = setUserQuotes(quotes, userCurrencies);
                 return updatedData;
             })
         }
@@ -114,14 +121,22 @@ angular.module('curAppLib', [])
 
         // return updated userData to $scope after adding currency
         return function(currencyItem, data) {
+
+            // define var
             let currency = currencyItem.substring(3);
             let flag = currencyItem.slice(0, 3);
             let currencyToAdd = new userCurrency(flag, currency);
             console.log(currencyToAdd);
+
+            // push the new currency obj into the data obj's userCurrencies arr
             data.userCurrencies.push(currencyToAdd);
             console.log(data.userCurrencies);
+
+            // get the 3 ltr currency codes from data obj
             let newCodes = pullUsersCurCodes(data.userCurrencies);
+
             updateCurrencies(newCodes, data.userCurrencies).then(function(response) {
+                console.log('ping');
                 $scope.userData = response;
             });
         }
