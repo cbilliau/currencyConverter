@@ -27,7 +27,7 @@
   <select class="button-large pure-button"
   ng-model="currencyItemAdd"
   ng-change="currencyAdd()"
-  ng-options="key + value as value for (key, value) in countries track by key">
+  ng-options="key as value for (key, value) in countries track by key">
     <option value="">Add Currency</option>
   </select>
 </div>

@@ -56,24 +56,19 @@ angular.module('curAppLib', [])
     .factory('getCurQuotes', [
     '$http',
     '$q',
-    'CUR_API_PREFIX',
-    'CUR_API_ENDPOINT_LIVE',
-    'CUR_API_KEY',
-    function($http, $q, CUR_API_PREFIX, CUR_API_ENDPOINT_LIVE, CUR_API_KEY) {
-        return function(codes) {
-            return $http({
-                method: 'GET',
-                url: CUR_API_PREFIX + CUR_API_ENDPOINT_LIVE + CUR_API_KEY + '&currencies=' + codes + '&format=1',
-                datatype: 'jsonp'
-            }).then(function(response) {
-                // push quotes obj into 'quotes' arr
-                var quotes = [];
-                for (val in response.data.quotes) {
-                    quotes.push(response.data.quotes[val]);
-                }
-                return $q.when(quotes);
-            });
-        };
+    function($http, $q) {
+      return function(codes) {
+          return $http.get('/api/' + codes ).success(function(response) {
+              callback(response);
+          }).then(function(response) {
+              // push quotes obj into 'quotes' arr
+              var quotes = [];
+              for (val in response.data.quotes) {
+                  quotes.push(response.data.quotes[val]);
+              }
+              return $q.when(quotes);
+          });
+      };
     }
 ])
 
@@ -123,6 +118,7 @@ angular.module('curAppLib', [])
         return function(currencyItem, data) {
 
             // define var
+            console.log(currencyItem);
             let currency = currencyItem.substring(3);
             let flag = currencyItem.slice(0, 3);
             let currencyToAdd = new userCurrency(flag, currency);
