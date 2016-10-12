@@ -22,17 +22,17 @@ app.post('/login', function(req, res) {
     var user = new User({username: username, password: password});
     var currency = new Currency({username: username, userCurrencies: []});
     user.save().then(function() {
-      console.log("successfully saved user!");
-      return currency.save();
+        console.log("successfully saved user!");
+        return currency.save();
     }, function(err) {
-      console.log("error saving user! " + err);
-      return res.status(201).json({success: false});
+        console.log("error saving user! " + err);
+        return res.status(201).json({success: false});
     }).then(function() {
-      console.log("successfully saved currency data for user !");
-      res.status(201).json({success: true});
+        console.log("successfully saved currency data for user !");
+        res.status(201).json({success: true});
     }, function(err) {
-      res.status(201).json({success: false});
-      console.log("error saving currency for user!");
+        res.status(201).json({success: false});
+        console.log("error saving currency for user!");
     });
 });
 
@@ -48,25 +48,17 @@ app.get('/api/:data', function(req, response) {
     var codes = req.params.data;
     var returnedRates;
     // call authorization routine
-    auth(req).then(function(response) {
+    auth(req).then(function(reply) {
 
-        // if response then call api
-        if (response) {
+        // if reply then call api
+        if (reply) {
             var options = {
                 host: 'www.apilayer.net',
                 path: '/api/live?access_key=6bd7e9293254526403d839455fcb946c&currencies=' + codes + '&format=1'
             };
             http.get(options, function(res) {
-              res.pipe(response);
-            //     console.log("Got response: " + res.statusCode);
-            //     res.on("data", function(chunk) {
-            //         console.log("BODY: " + chunk);
-            //
-            //     });
-            // }).on('error', function(e) {
-            //     console.log("Got error: " + e.message);
-            //     return e.message;
-            // });
+                res.pipe(response);
+            });
         } else {
             // if no response then send error
             res.status(500).json({message: 'Internal Server Error BLAH'});

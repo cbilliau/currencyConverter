@@ -1,26 +1,5 @@
 angular.module('curAppLib', [])
 
-// API constants
-    .constant('CUR_API_PREFIX', 'http://apilayer.net/api/')
-    .constant('CUR_API_ENDPOINT_LIVE', 'live')
-    .constant('CUR_API_ENDPOINT_HISTORICAL', 'historical')
-    .constant('CUR_API_KEY', '?access_key=6bd7e9293254526403d839455fcb946c')
-    .constant('CUR_COUNTRIES_LIST', './countriesList.json')
-
-// get countries list from json file
-    .factory('curCountriesList', [
-    '$http',
-    '$q',
-    'CUR_COUNTRIES_LIST',
-    function($http, $q, CUR_COUNTRIES_LIST) {
-        return function() {
-            return $http.get('CUR_COUNTRIES_LIST', {cache: true}).then(function(response) {
-                return $q.when(response.data);
-            })
-        }
-    }
-])
-
 // dataShare service
     .factory('dataShare', function($rootScope, $timeout) {
     var service = {};
@@ -36,70 +15,6 @@ angular.module('curAppLib', [])
     };
     return service;
 })
-
-// get user's saved three letter currency code choices
-    .factory('pullUsersCurCodes', function() {
-    return function(data) {
-        console.log(data);
-        var codes = [];
-        if (data !== null) {
-            for (index in data) {
-                codes.push(data[index].flag);
-            }
-        }
-        console.log(codes);
-        return codes;
-    }
-})
-
-// call api with user's curr codes / recieve rates
-    .factory('getCurQuotes', [
-    '$http',
-    '$q',
-    function($http, $q) {
-      return function(codes) {
-          return $http.get('/api/' + codes ).success(function(response) {
-              callback(response);
-          }).then(function(response) {
-              // push quotes obj into 'quotes' arr
-              console.log(response);
-              // var quotes = [];
-              // for (val in response.data.quotes) {
-              //     quotes.push(response.data.quotes[val]);
-              // }
-              // return $q.when(quotes);
-          });
-      };
-    }
-])
-
-// combine recieved rates with user data
-    .factory('setUserQuotes', function() {
-    return function(quotes, userCurrencies) {
-        for (index in userCurrencies) {
-            userCurrencies[index].rate = quotes[index];
-        }
-        console.log(userCurrencies);
-        return userCurrencies;
-    }
-})
-
-// update currencies function
-    .factory('updateCurrencies', [
-    'getCurQuotes',
-    'setUserQuotes',
-    function(getCurQuotes, setUserQuotes) {
-        return function(currencyCodes, userCurrencies) {
-
-            // call api with 3 ltr currency codes
-            return getCurQuotes(currencyCodes).then(function(quotesRes) {
-                quotes = quotesRes;
-                updatedData = setUserQuotes(quotes, userCurrencies);
-                return updatedData;
-            })
-        }
-    }
-])
 
 // add currency to cache
     .factory('addCurency', [
@@ -131,14 +46,77 @@ angular.module('curAppLib', [])
 
             // get the 3 ltr currency codes from data obj
             let newCodes = pullUsersCurCodes(data.userCurrencies);
-
+            // update userCurrencies with latest rates
             updateCurrencies(newCodes, data.userCurrencies).then(function(response) {
-                console.log('ping');
-                $scope.userData = response;
+                console.log(response);
+
+                userData = response;
             });
         }
     }
 ])
+
+// get user's saved three letter currency code choices
+    .factory('pullUsersCurCodes', function() {
+    return function(data) {
+        console.log(data);
+        var codes = [];
+        if (data !== null) {
+            for (index in data) {
+                codes.push(data[index].flag);
+            }
+        }
+        console.log(codes);
+        return codes;
+    }
+})
+
+// update currencies function
+    .factory('updateCurrencies', [
+    'getCurQuotes',
+    'setUserQuotes',
+    function(getCurQuotes, setUserQuotes) {
+        return function(currencyCodes, userCurrencies) {
+
+            // call api with 3 ltr currency codes
+            return getCurQuotes(currencyCodes).then(function(quotesRes) {
+                quotes = quotesRes;
+                console.log(quotes, userCurrencies);
+                updatedData = setUserQuotes(quotes, userCurrencies);
+                return updatedData;
+            })
+        }
+    }
+])
+
+// call api with user's curr codes / recieve rates
+    .factory('getCurQuotes', [
+    '$http',
+    '$q',
+    function($http, $q) {
+        return function(codes) {
+            return $http.get('/api/' + codes ).success(function(response) {
+                console.log(response);
+                var quotes = [];
+                for (val in response.quotes) {
+                    quotes.push(response.quotes[val]);
+                }
+                return $q.when(quotes);
+            });
+        };
+    }
+])
+
+// combine recieved rates with user data
+    .factory('setUserQuotes', function() {
+    return function(quotes, userCurrencies) {
+        for (index in userCurrencies) {
+            userCurrencies[index].rate = quotes[index];
+        }
+        console.log(userCurrencies);
+        return userCurrencies;
+    }
+})
 
 // remove currency from cache
     .factory('removeCurrency', [
