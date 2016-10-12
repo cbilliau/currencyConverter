@@ -43,7 +43,7 @@ app.get('/login/data', function(req, res) {
     });
 });
 
-app.get('/api/:data', function(req, res) {
+app.get('/api/:data', function(req, response) {
     // pull three ltr codes from header
     var codes = req.params.data;
     var returnedRates;
@@ -57,15 +57,16 @@ app.get('/api/:data', function(req, res) {
                 path: '/api/live?access_key=6bd7e9293254526403d839455fcb946c&currencies=' + codes + '&format=1'
             };
             http.get(options, function(res) {
-                console.log("Got response: " + res.statusCode);
-                res.on("data", function(chunk) {
-                    console.log("BODY: " + chunk);
-
-                });
-            }).on('error', function(e) {
-                console.log("Got error: " + e.message);
-                return e.message;
-            });
+              res.pipe(response);
+            //     console.log("Got response: " + res.statusCode);
+            //     res.on("data", function(chunk) {
+            //         console.log("BODY: " + chunk);
+            //
+            //     });
+            // }).on('error', function(e) {
+            //     console.log("Got error: " + e.message);
+            //     return e.message;
+            // });
         } else {
             // if no response then send error
             res.status(500).json({message: 'Internal Server Error BLAH'});
