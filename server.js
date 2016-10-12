@@ -3,6 +3,7 @@ const http = require('http');
 const auth = require('./config/auth.js').auth;
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
 const config = require('./config/config.js');
 const User = require('./models/users.js');
 const Currency = require('./models/currencies.js');
@@ -20,19 +21,19 @@ app.post('/login', function(req, res) {
     var password = req.body.password;
     var user = new User({username: username, password: password});
     var currency = new Currency({username: username, userCurrencies: []});
-    currency.save(function(err) {
-        if (err) {
-            // return res.status(500).json({message: 'Internal server error - currency'});
-        }
-        // return res.status(201).json({success: true});
+    user.save().then(function() {
+      console.log("successfully saved user!");
+      return currency.save();
+    }, function(err) {
+      console.log("error saving user! " + err);
+      return res.status(201).json({success: false});
+    }).then(function() {
+      console.log("successfully saved currency data for user !");
+      res.status(201).json({success: true});
+    }, function(err) {
+      res.status(201).json({success: false});
+      console.log("error saving currency for user!");
     });
-    user.save(function(err) {
-        if (err) {
-            // return res.status(500).json({message: 'Internal server error - user'});
-        }
-        // return res.status(201).json({success: true});
-    });
-    res.status(201).json({success: true});
 });
 
 app.get('/login/data', function(req, res) {
