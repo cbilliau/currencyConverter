@@ -62,11 +62,12 @@ angular.module('curAppLib', [])
               callback(response);
           }).then(function(response) {
               // push quotes obj into 'quotes' arr
-              var quotes = [];
-              for (val in response.data.quotes) {
-                  quotes.push(response.data.quotes[val]);
-              }
-              return $q.when(quotes);
+              console.log(response);
+              // var quotes = [];
+              // for (val in response.data.quotes) {
+              //     quotes.push(response.data.quotes[val]);
+              // }
+              // return $q.when(quotes);
           });
       };
     }

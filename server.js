@@ -1,5 +1,6 @@
 const express = require('express');
 const http = require('http');
+const auth = require('./config/auth.js').auth;
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const config = require('./config/config.js');
@@ -35,68 +36,41 @@ app.post('/login', function(req, res) {
 });
 
 app.get('/login/data', function(req, res) {
-    // header looks like this: Basic base64encodeddata
-    // we split to get the encoded data coming from angular
-    var authHeaderB64 = req.headers.authorization.split(' ')[1];
-    // console.log("Base 64 encoded header: " + authHeaderB64);
-    // decode the encoded data
-    var buffer = new Buffer(authHeaderB64, 'base64')
-    var authHeader = buffer.toString();
-    // console.log("decoded header with username and password: " + authHeader); //admin:admin
-    // you now have the username and password and can query the currency model with the username
-    var splitHeader = function(data) {
-        var arr = data.split(':');
-        return arr[0];
-    };
-    var username = splitHeader(authHeader);
-    var key = Currency.findOne({
-        'username': username
-    }, function(err, user) {
-        if (err) {
-            return response.status(500).json({message: 'Internal Server Error'});
-        }
-        // console.log('user = ' + user);
-        res.status(200).json(user);
+    auth(req).then(function(response) {
+        console.log(response);
+        res.status(200).json(response)
     });
 });
 
 app.get('/api/:data', function(req, res) {
+    // pull three ltr codes from header
     var codes = req.params.data;
-    var authHeaderB64 = req.headers.authorization.split(' ')[1];
-    var buffer = new Buffer(authHeaderB64, 'base64')
-    var authHeader = buffer.toString();
-    var splitHeader = function(data) {
-        var arr = data.split(':');
-        return arr[0];
-    };
-    var username = splitHeader(authHeader);
-    var key = User.findOne({
-        'username': username
-    }, function(err, user) {
-        if (err) {
-            return response.status(500).json({message: 'Internal Server Error'});
+    var returnedRates;
+    // call authorization routine
+    auth(req).then(function(response) {
+
+        // if response then call api
+        if (response) {
+            var options = {
+                host: 'www.apilayer.net',
+                path: '/api/live?access_key=6bd7e9293254526403d839455fcb946c&currencies=' + codes + '&format=1'
+            };
+            http.get(options, function(res) {
+                console.log("Got response: " + res.statusCode);
+                res.on("data", function(chunk) {
+                    console.log("BODY: " + chunk);
+
+                });
+            }).on('error', function(e) {
+                console.log("Got error: " + e.message);
+                return e.message;
+            });
+        } else {
+            // if no response then send error
+            res.status(500).json({message: 'Internal Server Error BLAH'});
         }
-        // call api if user valid
-        layerApi(req, res, codes);
     });
 });
-
-// call api
-var layerApi = function(req, res, codes) {
-    var options = {
-        host: 'www.apilayer.net',
-        path: '/api/live?access_key=6bd7e9293254526403d839455fcb946c&currencies=' + codes + '&format=1',
-    };
-    http.get(options, function(res) {
-        console.log("Got response: " + res.statusCode);
-
-        res.on("data", function(chunk) {
-            console.log("BODY: " + chunk);
-        });
-    }).on('error', function(e) {
-        console.log("Got error: " + e.message);
-    });
-};
 
 // server (db / http server)
 var runServer = function(callback) {
