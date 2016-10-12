@@ -29,27 +29,24 @@ angular.module('curAppLib', [])
             this.history30Day = '...',
             this.rate = null
         }
-
         // return updated userData to $scope after adding currency
         return function(currencyItem, data) {
-
             // define var
-            console.log(currencyItem);
             let currency = currencyItem.substring(3);
             let flag = currencyItem.slice(0, 3);
-            let currencyToAdd = new userCurrency(flag, currency);
-            console.log(currencyToAdd);
-
+            let currencyToAdd = {
+                flag : flag,
+                currency : currency,
+                history30Day : '...',
+                rate : null
+            };
             // push the new currency obj into the data obj's userCurrencies arr
             data.userCurrencies.push(currencyToAdd);
-            console.log(data.userCurrencies);
-
             // get the 3 ltr currency codes from data obj
             let newCodes = pullUsersCurCodes(data.userCurrencies);
             // update userCurrencies with latest rates
-            updateCurrencies(newCodes, data.userCurrencies).then(function(response) {
+            updateCurrencies(newCodes, data).then(function(response) {
                 console.log(response);
-
                 userData = response;
             });
         }
@@ -59,14 +56,12 @@ angular.module('curAppLib', [])
 // get user's saved three letter currency code choices
     .factory('pullUsersCurCodes', function() {
     return function(data) {
-        console.log(data);
         var codes = [];
         if (data !== null) {
             for (index in data) {
                 codes.push(data[index].flag);
             }
         }
-        console.log(codes);
         return codes;
     }
 })
@@ -76,13 +71,11 @@ angular.module('curAppLib', [])
     'getCurQuotes',
     'setUserQuotes',
     function(getCurQuotes, setUserQuotes) {
-        return function(currencyCodes, userCurrencies) {
-
+        return function(currencyCodes, data) {
             // call api with 3 ltr currency codes
             return getCurQuotes(currencyCodes).then(function(quotesRes) {
                 quotes = quotesRes;
-                console.log(quotes, userCurrencies);
-                updatedData = setUserQuotes(quotes, userCurrencies);
+                updatedData = setUserQuotes(quotes, data);
                 return updatedData;
             })
         }
@@ -96,7 +89,6 @@ angular.module('curAppLib', [])
     function($http, $q) {
         return function(codes) {
             return $http.get('/api/' + codes ).success(function(response) {
-                console.log(response);
                 var quotes = [];
                 for (val in response.quotes) {
                     quotes.push(response.quotes[val]);
@@ -109,12 +101,11 @@ angular.module('curAppLib', [])
 
 // combine recieved rates with user data
     .factory('setUserQuotes', function() {
-    return function(quotes, userCurrencies) {
-        for (index in userCurrencies) {
-            userCurrencies[index].rate = quotes[index];
+    return function(quotes, data) {
+        for (index in data.userCurrencies) {
+            data.userCurrencies[index].rate = quotes[index];
         }
-        console.log(userCurrencies);
-        return userCurrencies;
+        return data;
     }
 })
 

@@ -60,12 +60,14 @@ viewsModule.controller('MainController', [
             var curCodes = pullUsersCurCodes($scope.data.userCurrencies);
             $scope.updateCur = updateCurrencies(curCodes, $scope.data.userCurrencies).then(function(response) {
                 $scope.userData = response;
+                console.log($scope.userData);
             });
           }
 
           // add currency to Data cache
           $scope.currencyAdd = function($event) {
               addCurency($scope.currencyItemAdd, $scope.data);
+              console.log($scope.userData);
           }
 
           // remove currency from Data cache
