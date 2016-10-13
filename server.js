@@ -38,23 +38,26 @@ app.post('/signup', function(req, res) {
 });
 
 app.post('/login', function(req, res) {
-  console.log('login');
-  var username = req.body.username;
-  var password = req.body.password;
-  var login = username + ':' + password;
-  console.log(login);
+    console.log('login');
+    var username = req.body.username;
+    var password = req.body.password;
+    var login = username + ':' + password;
+    // console.log(login);
     auth(login).then(function(response) {
-      if (response === null) {
-        res.status(201).json({success:false})
-      }
-      res.status(201).json({success:true})
+        if (response === null) {
+            res.status(201).json({success: false})
+        }
+        res.status(201).json({success: true})
     });
 });
 
 app.get('/login/data', function(req, res) {
-    console.log('get user data');
+    console.log('get user data...');
     auth(req).then(function(response) {
-        console.log(response);
+        // console.log(response);
+        if (response === null) {
+            res.status(201).json({success: false})
+        }
         res.status(201).json(response)
     });
 });
@@ -73,6 +76,26 @@ app.get('/api', function(req, response) {
             // if no response then send error
             res.status(500).json({message: 'Internal Server Error BLAH'});
         }
+    });
+});
+
+app.put('/user/addCurency', function(req, res) {
+    console.log('putting currency in user account...');
+    var newCurrencyArray = req.body.currencyArray;
+    auth(req).then(function(response) {
+        if (response === null) {
+            res.status(201).json({error: false})
+        }
+        var key = response._id;
+        console.log(key);
+        Currency.findByIdAndUpdate(key, {
+            userCurrencies: newCurrencyArray
+        }, function(err, data) {
+            if (err) {
+                return res.status(500).json({message: 'Internal Server Error'});
+            }
+            res.status(201).json({success: true});
+        });
     });
 });
 

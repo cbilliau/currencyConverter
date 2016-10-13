@@ -49,8 +49,13 @@ viewsModule.controller('MainController', [
 
         // recieve user data from login controller via dataShare service
         $scope.$on('data_shared', function() {
+            // load in user's currency schema
             var data = dataShare.getData();
             console.log(data);
+
+            // expose user's userCurrencies arr to scope
+            $scope.userData = data.userCurrencies;
+            console.log($scope.userData);
 
             // countries list
             $scope.countries = countriesList;
@@ -61,10 +66,6 @@ viewsModule.controller('MainController', [
                 console.log(response.data);
                 currencyRates = response.data.rates;
             });
-
-            // expose loaded userCurrencies to scope
-            $scope.userData = data.userCurrencies;
-            console.log($scope.userData);
 
             // if ($scope.data.userCurrencies !== null) {
             //   console.log('loading currencies...');
@@ -78,7 +79,7 @@ viewsModule.controller('MainController', [
             // add currency to
             $scope.currencyAdd = function($event) {
                 addCurency($scope.currencyItemAdd, data, currencyRates);
-                console.log($scope.userData);
+                // console.log($scope.userData);
             }
 
             // remove currency from Data cache

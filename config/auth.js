@@ -25,11 +25,11 @@ exports.auth = function(req) {
         // auth for endpoint after login
         console.log('end point auth...');
         var authHeaderB64 = req.headers.authorization.split(' ')[1];
-        console.log("Base 64 encoded header: " + authHeaderB64);
+        // console.log("Base 64 encoded header: " + authHeaderB64);
         // decode the encoded data
         var buffer = new Buffer(authHeaderB64, 'base64')
         var authHeader = buffer.toString();
-        console.log("decoded header with username and password: " + authHeader); //admin:admin
+        // console.log("decoded header with username and password: " + authHeader); //admin:admin
         // you now have the username and password and can query the currency model with the username
         var splitHeader = function(data) {
             var arr = data.split(':');
