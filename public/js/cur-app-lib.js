@@ -28,14 +28,15 @@ angular.module('curAppLib', [])
             });
         };
     }
-]).factory('putCurrencyArray', [
+])
+
+// update user account with selected/removed currencies
+    .factory('putCurrencyArray', [
     '$http',
     '$q',
     function($http, $q) {
         return function(currencyArray) {
-            return $http.put('/user/addCurency', {
-              currencyArray: currencyArray
-            }).success(function(response) {
+            return $http.put('/user/addCurency', {currencyArray: currencyArray}).success(function(response) {
                 console.log(response);
                 return response;
             })
@@ -70,10 +71,35 @@ angular.module('curAppLib', [])
             let quotes = updateCurrencies(newCodes, data.userCurrencies, currencyList);
             let updatedData = setUserQuotes(quotes, data.userCurrencies);
             console.log(updatedData);
-            // add userCurrencies arr to user account in
+            // update userCurrencies arr to user account in
             putCurrencyArray(updatedData);
             userData = updatedData;
         };
+    }
+])
+
+// remove currency from cache
+    .factory('removeCurrency', [
+    'pullUsersCurCodes',
+    'updateCurrencies',
+    'setUserQuotes',
+    'putCurrencyArray',
+    function(pullUsersCurCodes, updateCurrencies, setUserQuotes, putCurrencyArray) {
+        return function(currencyItem, data, currencyList) {
+            for (index in data.userCurrencies) {
+                if (data.userCurrencies[index].flag.indexOf(currencyItem.flag) == 0) {
+                    data.userCurrencies.splice(index, 1);
+                    let newCodes = pullUsersCurCodes(data.userCurrencies);
+                    // console.log(newCodes);
+                    let quotes = updateCurrencies(newCodes, data.userCurrencies, currencyList);
+                    let updatedData = setUserQuotes(quotes, data.userCurrencies);
+                    // console.log(updatedData);
+                    // update userCurrencies arr to user account in
+                    putCurrencyArray(updatedData);
+                    userData = updatedData;
+                }
+            }
+        }
     }
 ])
 
@@ -106,10 +132,7 @@ angular.module('curAppLib', [])
                     }
                 }
             }
-            // console.log(quotes);
             return quotes;
-            // updatedData = setUserQuotes(quotes, userCurrencies);
-            // return updatedData;
         }
     }
 ])
@@ -123,23 +146,4 @@ angular.module('curAppLib', [])
         // console.log(userCurrencies);
         return userCurrencies;
     }
-})
-
-// remove currency from cache
-    .factory('removeCurrency', [
-    'pullUsersCurCodes',
-    'updateCurrencies',
-    function(pullUsersCurCodes, updateCurrencies) {
-        return function(currencyItem, data) {
-            for (index in data.userCurrencies) {
-                if (data.userCurrencies[index].flag.indexOf(currencyItem.flag) == 0) {
-                    data.userCurrencies.splice(index, 1);
-                    let newCodes = pullUsersCurCodes(data.userCurrencies);
-                    updateCurrencies(newCodes, data.userCurrencies).then(function(response) {
-                        return userData = response;
-                    });
-                }
-            }
-        }
-    }
-])
+});

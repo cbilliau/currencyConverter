@@ -49,6 +49,7 @@ viewsModule.controller('MainController', [
 
         // recieve user data from login controller via dataShare service
         $scope.$on('data_shared', function() {
+
             // load in user's currency schema
             var data = dataShare.getData();
             console.log(data);
@@ -67,26 +68,16 @@ viewsModule.controller('MainController', [
                 currencyRates = response.data.rates;
             });
 
-            // if ($scope.data.userCurrencies !== null) {
-            //   console.log('loading currencies...');
-            //   var curCodes = pullUsersCurCodes($scope.data.userCurrencies);
-            //   $scope.updateCur = updateCurrencies(curCodes, $scope.data.userCurrencies).then(function(response) {
-            //       $scope.userData = response;
-            //       console.log($scope.userData);
-            //   });
-            // }
-
             // add currency to
             $scope.currencyAdd = function($event) {
                 addCurency($scope.currencyItemAdd, data, currencyRates);
                 // console.log($scope.userData);
-            }
+            };
 
             // remove currency from Data cache
             $scope.currencyRemove = function(currencyItem) {
-                removeCurrency(currencyItem, data);
-            }
-        })
-
+                removeCurrency(currencyItem, data, currencyRates);
+            };
+        });
     }
 ]);
