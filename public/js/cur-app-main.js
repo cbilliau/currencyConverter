@@ -7,7 +7,9 @@ viewsModule.controller('MainController', [
     'addCurency',
     'removeCurrency',
     'dataShare',
-    function($scope, pullUsersCurCodes, getCurQuotes, setUserQuotes, updateCurrencies, addCurency, removeCurrency, dataShare) {
+    'AuthenticationService',
+    '$location',
+    function($scope, pullUsersCurCodes, getCurQuotes, setUserQuotes, updateCurrencies, addCurency, removeCurrency, dataShare, AuthenticationService, $location) {
 
         var countriesList = {
             AUD: "Australian Dollar",
@@ -78,6 +80,12 @@ viewsModule.controller('MainController', [
             $scope.currencyRemove = function(currencyItem) {
                 removeCurrency(currencyItem, data, currencyRates);
             };
+
+            // logout
+            $scope.logout = function(){
+              AuthenticationService.ClearCredentials();
+              $location.path('/login');
+            }
         });
     }
 ]);
