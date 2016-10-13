@@ -66,7 +66,7 @@ app.get('/api', function(req, response) {
         // if reply then call api
         if (reply) {
             http.get('http://api.fixer.io/latest?base=USD', function(res) {
-                console.log(res);
+                // console.log(res);
                 res.pipe(response);
             });
         } else {
