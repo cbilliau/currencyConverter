@@ -19,6 +19,23 @@ viewsModule.controller('LoginController', [
                       $location.path('/main');
                     });
                 } else {
+                    console.log('no such user');
+                    $scope.error = response.message;
+                    $scope.dataLoading = false;
+                }
+            })
+        }
+
+        $scope.signup = function() {
+            $scope.dataLoading = true;
+            AuthenticationService.Signup($scope.username, $scope.password, function(response) {
+                if (response.success) {
+                    AuthenticationService.SetCredentials($scope.username, $scope.password);
+                    AuthenticationService.GetData(function(response) {
+                      dataShare.sendData(response); // share data with app
+                      $location.path('/main');
+                    });
+                } else {
                     $scope.error = response.message;
                     $scope.dataLoading = false;
                 }

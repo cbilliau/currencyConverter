@@ -27,11 +27,22 @@ angular.module('curAuthServ', []).factory('AuthenticationService', [
                 username: username,
                 password: password
             }).success(function(response) {
+                console.log(response);
                 callback(response);
             });
 
         };
 
+        service.Signup = function(username, password, callback) {
+            $http.post('/signup', {
+                username: username,
+                password: password
+            }).success(function(response) {
+              console.log(response);
+                callback(response);
+            });
+
+        };
         service.GetData = function(callback) {
             $http.get('/login/data').success(function(response) {
                 callback(response);

@@ -16,7 +16,8 @@ app.use(express.static('public'));
 app.use(express.static('node_modules'));
 
 // routes
-app.post('/login', function(req, res) {
+app.post('/signup', function(req, res) {
+    console.log('signup');
     var username = req.body.username;
     var password = req.body.password;
     var user = new User({username: username, password: password});
@@ -36,27 +37,36 @@ app.post('/login', function(req, res) {
     });
 });
 
-app.get('/login/data', function(req, res) {
-    auth(req).then(function(response) {
-        console.log(response);
-        res.status(200).json(response)
+app.post('/login', function(req, res) {
+  console.log('login');
+  var username = req.body.username;
+  var password = req.body.password;
+  var login = username + ':' + password;
+  console.log(login);
+    auth(login).then(function(response) {
+      if (response === null) {
+        res.status(201).json({success:false})
+      }
+      res.status(201).json({success:true})
     });
 });
 
-app.get('/api/:data', function(req, response) {
-    // pull three ltr codes from header
-    var codes = req.params.data;
-    var returnedRates;
-    // call authorization routine
-    auth(req).then(function(reply) {
+app.get('/login/data', function(req, res) {
+    console.log('get user data');
+    auth(req).then(function(response) {
+        console.log(response);
+        res.status(201).json(response)
+    });
+});
 
+app.get('/api', function(req, response) {
+    // pull three ltr codes from header
+    console.log('get currency list...');
+    auth(req).then(function(reply) {
         // if reply then call api
         if (reply) {
-            var options = {
-                host: 'www.apilayer.net',
-                path: '/api/live?access_key=6bd7e9293254526403d839455fcb946c&currencies=' + codes + '&format=1'
-            };
-            http.get(options, function(res) {
+            http.get('http://api.fixer.io/latest?base=USD', function(res) {
+                console.log(res);
                 res.pipe(response);
             });
         } else {

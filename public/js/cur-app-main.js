@@ -43,39 +43,49 @@ viewsModule.controller('MainController', [
             SGD: "Singapore Dollar",
             THB: "Thai Baht",
             TRY: "Turkish Lira",
-            ZAR: "South African Rand",
+            ZAR: "South African Rand"
         }; //
         // ================ View =========================
 
         // recieve user data from login controller via dataShare service
-        $scope.$on('data_shared', function(){
-          $scope.data = dataShare.getData();
-          console.log($scope.data);
+        $scope.$on('data_shared', function() {
+            var data = dataShare.getData();
+            console.log(data);
 
-          // countries list
-          $scope.countries = countriesList;
+            // countries list
+            $scope.countries = countriesList;
 
-          if ($scope.data.userCurrencies == null) {
-            console.log('loading currencies...');
-            var curCodes = pullUsersCurCodes($scope.data.userCurrencies);
-            $scope.updateCur = updateCurrencies(curCodes, $scope.data.userCurrencies).then(function(response) {
-                $scope.userData = response;
-                console.log($scope.userData);
+            // get currency quotes
+            var currencyRates;
+            var currencyList = getCurQuotes().then(function(response) {
+                console.log(response.data);
+                currencyRates = response.data.rates;
             });
-          }
 
-          // add currency to Data cache
-          $scope.currencyAdd = function($event) {
-              addCurency($scope.currencyItemAdd, $scope.data);
-              console.log($scope.userData);
-          }
+            // expose loaded userCurrencies to scope
+            $scope.userData = data.userCurrencies;
+            console.log($scope.userData);
 
-          // remove currency from Data cache
-          $scope.currencyRemove = function(currencyItem) {
-              removeCurrency(currencyItem, Data);
-          }
+            // if ($scope.data.userCurrencies !== null) {
+            //   console.log('loading currencies...');
+            //   var curCodes = pullUsersCurCodes($scope.data.userCurrencies);
+            //   $scope.updateCur = updateCurrencies(curCodes, $scope.data.userCurrencies).then(function(response) {
+            //       $scope.userData = response;
+            //       console.log($scope.userData);
+            //   });
+            // }
+
+            // add currency to
+            $scope.currencyAdd = function($event) {
+                addCurency($scope.currencyItemAdd, data, currencyRates);
+                console.log($scope.userData);
+            }
+
+            // remove currency from Data cache
+            $scope.currencyRemove = function(currencyItem) {
+                removeCurrency(currencyItem, data);
+            }
         })
-
 
     }
 ]);
