@@ -1,4 +1,4 @@
-var currencyApp = angular.module('curApp', ['curAppViews', 'ngRoute', 'ngCookies'])
+var currencyApp = angular.module('curApp', ['curAppViews', 'ngRoute', 'ngCookies', 'ngAnimate'])
       .config(function($locationProvider, $routeProvider) {
           $locationProvider.hashPrefix('!');
           $routeProvider.otherwise({

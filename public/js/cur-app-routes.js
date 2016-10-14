@@ -1,15 +1,26 @@
-viewsModule.config(['$routeProvider', function ($routeProvider) {
+viewsModule.config([
+    '$routeProvider',
+    function($routeProvider) {
 
-    $routeProvider
-        .when('/login', {
+        $routeProvider.when('/login', {
             controller: 'LoginController',
             templateUrl: './login.html'
-        })
-
-        .when('/', {
+        }).when('/', {
             controller: 'MainController',
             templateUrl: './main.html'
-        })
+        }).when('/error', {
+            template: '<p>Error - Page Not Found</p>'
+        }).otherwise('/error');
+    }
 
-        .otherwise({ redirectTo: '/' });
-}])
+]).run(function($rootScope, $location, $timeout) {
+    $rootScope.$on('$routeChangeError', function() {
+        $location.path("/error");
+    });
+    $rootScope.$on('$routeChangeStart', function() {
+        $rootScope.isLoading = true;
+    });
+    $rootScope.$on('$routeChangeSuccess', function() {
+            $rootScope.isLoading = false;
+    });
+});

@@ -9,6 +9,10 @@ viewsModule.controller('LoginController', [
         // reset login status
         AuthenticationService.ClearCredentials();
 
+        // validation
+        $scope.formInvalid = false;
+
+        // login
         $scope.login = function() {
             $scope.dataLoading = true;
             AuthenticationService.Login($scope.username, $scope.password, function(response) {
@@ -19,13 +23,15 @@ viewsModule.controller('LoginController', [
                       $location.path('/main');
                     });
                 } else {
-                    console.log('no such user');
+                    $scope.formInvalid = true;
+                    $scope.loginMsg = "Username not found or password may be incorrect";
                     $scope.error = response.message;
                     $scope.dataLoading = false;
                 }
             })
         }
 
+        // signup
         $scope.signup = function() {
             $scope.dataLoading = true;
             AuthenticationService.Signup($scope.username, $scope.password, function(response) {
@@ -36,6 +42,8 @@ viewsModule.controller('LoginController', [
                       $location.path('/main');
                     });
                 } else {
+                    $scope.formInvalid = true;
+                    $scope.loginMsg = "User already exists";
                     $scope.error = response.message;
                     $scope.dataLoading = false;
                 }

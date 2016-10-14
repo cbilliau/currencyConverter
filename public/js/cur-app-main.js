@@ -53,11 +53,11 @@ viewsModule.controller('MainController', [
         $scope.$on('data_shared', function() {
 
             // load in user's currency schema
-            var data = dataShare.getData();
-            console.log(data);
+            $scope.data = dataShare.getData();
+            console.log($scope.data);
 
             // expose user's userCurrencies arr to scope
-            $scope.userData = data.userCurrencies;
+            $scope.userData = $scope.data.userCurrencies;
             console.log($scope.userData);
 
             // countries list
@@ -72,13 +72,13 @@ viewsModule.controller('MainController', [
 
             // add currency to
             $scope.currencyAdd = function($event) {
-                addCurency($scope.currencyItemAdd, data, currencyRates);
+                addCurency($scope.currencyItemAdd, $scope.data, currencyRates);
                 // console.log($scope.userData);
             };
 
             // remove currency from Data cache
             $scope.currencyRemove = function(currencyItem) {
-                removeCurrency(currencyItem, data, currencyRates);
+                removeCurrency(currencyItem, $scope.data, currencyRates);
             };
 
             // logout

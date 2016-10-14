@@ -1,40 +1,47 @@
-<!-- Column Headers -->
-<div class="pure-g custom-text-center">
-    <div class="pure-u-1-7"><p>Flag</p></div>
-    <div class="pure-u-1-7"><p>Currency</p></div>
-    <div class="pure-u-1-7"><p>History</p></div>
-    <div class="pure-u-1-7"><p>Rate</p></div>
-    <div class="pure-u-1-7"><p>Amount</p></div>
-    <div class="pure-u-1-7"><p>US Dolars</p></div>
-    <div class="pure-u-1-7"><p></p></div>
-</div>
+<div class="main fade">
 
-<hr>
+  <!-- logout button -->
+  <div class="pure-u-1">
+    <p>
+      User: {{data.username}}
+    <button type="submit"
+    ng-click="logout()"
+    class="right pure-button pure-button-primary">Log out</button>
+    </p>
+  </div>
 
-<!-- User's currency rates -->
-<div ng-repeat="data in userData" class="pure-g custom-text-center">
-  <img class="pure-u-1-7 flag" src='http://www.geonames.org/flags/x/{{ data.flag | lowercase | limitTo:2 }}.gif'/>
-  <div class="pure-u-1-7"><p>{{ data.currency }}</p></div>
-  <div class="pure-u-1-7"><p>{{ data.history30Day }}</p></div>
-  <div class="pure-u-1-7"><p>{{ data.rate | number }}</p></div>
-  <div class="pure-u-1-7"><input ng-model='amount' placeholder="0.00" type="number"></div>
-  <div class="pure-u-1-7"><p>{{ amount / data.rate | currency}}</p></div>
-  <div class="pure-u-1-7"><button class="button-small button-secondary pure-button" ng-model="currencyItemRemove" ng-click="currencyRemove(data)">Remove</button></div>
-</div>
+  <!-- Column Headers -->
+  <div class="pure-g custom-text-center">
+      <div class="pure-u-1-7"><p>Flag</p></div>
+      <div class="pure-u-1-7"><p>Currency</p></div>
+      <div class="pure-u-1-7"><p>History</p></div>
+      <div class="pure-u-1-7"><p>Rate</p></div>
+      <div class="pure-u-1-7"><p>Amount</p></div>
+      <div class="pure-u-1-7"><p>US Dolars</p></div>
+      <div class="pure-u-1-7"><p></p></div>
+  </div>
 
-<!-- Add currency button -->
-<div class="pure-u-1">
-  <select class="button-large pure-button"
-  ng-model="currencyItemAdd"
-  ng-change="currencyAdd()"
-  ng-options="key + value as value for (key, value) in countries track by key">
-    <option value="">Add Currency</option>
-  </select>
-</div>
+  <hr>
 
-<!-- logout button -->
-<div class="pure-u-1">
-  <button type="submit"
-  ng-click="logout()">Log out</button>
-  </select>
+  <!-- User's currency rates -->
+  <div ng-repeat="data in userData" class="pure-g custom-text-center fade">
+    <div class="pure-u-1-7"><img class="flag" src='http://www.geonames.org/flags/x/{{ data.flag | lowercase | limitTo:2 }}.gif'/></div>
+    <div class="pure-u-1-7"><p>{{ data.currency }}</p></div>
+    <div class="pure-u-1-7"><p>{{ data.history30Day }}</p></div>
+    <div class="pure-u-1-7"><p>{{ data.rate | number }}</p></div>
+    <div class="pure-u-1-7"><input ng-model='amount' placeholder="0.00" type="number"></div>
+    <div class="pure-u-1-7"><p>{{ amount / data.rate | currency}}</p></div>
+    <div class="pure-u-1-7"><button class="button-small button-secondary pure-button" ng-model="currencyItemRemove" ng-click="currencyRemove(data)">Remove</button></div>
+  </div>
+
+  <!-- Add currency button -->
+  <div class="pure-u-1">
+    <select class="button-large pure-button"
+    ng-model="currencyItemAdd"
+    ng-change="currencyAdd()";
+    ng-options="key + value as value for (key, value) in countries track by key">
+      <option value="">Add Currency</option>
+    </select>
+  </div>
+
 </div>
