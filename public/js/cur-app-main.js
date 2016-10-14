@@ -10,7 +10,7 @@ viewsModule.controller('MainController', [
     'dataShare',
     'AuthenticationService',
     'changeDate',
-    function($scope, $locatio, pullUsersCurCodes, getCurQuotes, setUserQuotes, updateCurrencies, addCurency, removeCurrency, dataShare, AuthenticationService, changeDate) {
+    function($scope, $location, pullUsersCurCodes, getCurQuotes, setUserQuotes, updateCurrencies, addCurency, removeCurrency, dataShare, AuthenticationService, changeDate) {
 
         var countriesList = {
             AUD: "Australian Dollar",
@@ -84,12 +84,13 @@ viewsModule.controller('MainController', [
             $scope.changeDate = function($event){
               // console.log($scope.selectedDate);
               changeDate($scope.selectedDate, $scope.data);
-              // $scope.selectedDate = "";
+              $scope.selectedDate = "";
             };
 
             // add currency to
             $scope.currencyAdd = function($event) {
                 addCurency($scope.currencyItemAdd, $scope.data, currencyRates);
+                $scope.currencyItemAdd = "";
                 // console.log($scope.userData);
             };
 
