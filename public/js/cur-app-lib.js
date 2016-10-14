@@ -19,10 +19,22 @@ angular.module('curAppLib', [])
 // call api with user's curr codes / recieve rates
     .factory('getCurQuotes', [
     '$http',
-    '$q',
-    function($http, $q) {
+    function($http) {
         return function() {
             return $http.get('/api').success(function(response) {
+                console.log(response);
+                return response;
+            });
+        };
+    }
+])
+
+// call api for history currency rates
+    .factory('getCurQuotesHistory', [
+    '$http',
+    function($http) {
+        return function(date) {
+            return $http.get('/api/' + date).success(function(response) {
                 console.log(response);
                 return response;
             });
@@ -33,8 +45,7 @@ angular.module('curAppLib', [])
 // update user account with selected/removed currencies
     .factory('putCurrencyArray', [
     '$http',
-    '$q',
-    function($http, $q) {
+    function($http) {
         return function(currencyArray) {
             return $http.put('/user/addCurency', {currencyArray: currencyArray}).success(function(response) {
                 console.log(response);
@@ -60,7 +71,7 @@ angular.module('curAppLib', [])
             let currencyToAdd = {
                 flag: flag,
                 currency: currency,
-                history30Day: '...',
+                history: null,
                 rate: null
             };
             // push the new currency obj into the data obj's userCurrencies arr
@@ -146,4 +157,37 @@ angular.module('curAppLib', [])
         // console.log(userCurrencies);
         return userCurrencies;
     }
-});
+})
+
+// change date of historical change column
+    .factory('changeDate', [
+    'getCurQuotesHistory',
+    function(getCurQuotesHistory) {
+        return function(dateObj, data) {
+            // var userCurrencies = data.userCurrencies;
+            let monthsBack = dateObj.value;
+
+            // set new date n
+            let d = new Date();
+            d.setMonth(d.getMonth() - monthsBack);
+            let d1 = d.toISOString();
+            let n = d1.slice(0, 10);
+
+            // get historical rates for n
+            getCurQuotesHistory(n).then(function(response) {
+
+                // parse historical rates into user userCurrencies
+                let rate = response.data;
+                for (i = 0; i < data.userCurrencies.length; i++) {
+                    for (val in rate.rates) {
+                        if (val == data.userCurrencies[i].flag) {
+                            data.userCurrencies[i].history = rate.rates[val];
+                        }
+                    }
+                }
+                console.log(data);
+                userData = data;
+            });
+        }
+    }
+]);

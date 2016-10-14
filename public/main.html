@@ -2,7 +2,7 @@
 
   <!-- logout button -->
   <div class="pure-u-1">
-    <p>
+    <p id="user">
       User: {{data.username}}
     <button type="submit"
     ng-click="logout()"
@@ -14,7 +14,7 @@
   <div class="pure-g custom-text-center">
       <div class="pure-u-1-7"><p>Flag</p></div>
       <div class="pure-u-1-7"><p>Currency</p></div>
-      <div class="pure-u-1-7"><p>History</p></div>
+      <div class="pure-u-1-7"><p>% Change <select class="button-small pure-button" ng-model="selectedDate" ng-change="changeDate()" ng-options="date.date for date in dates"><option value="">select</select></p></div>
       <div class="pure-u-1-7"><p>Rate</p></div>
       <div class="pure-u-1-7"><p>Amount</p></div>
       <div class="pure-u-1-7"><p>US Dolars</p></div>
@@ -27,7 +27,7 @@
   <div ng-repeat="data in userData" class="pure-g custom-text-center fade">
     <div class="pure-u-1-7"><img class="flag" src='http://www.geonames.org/flags/x/{{ data.flag | lowercase | limitTo:2 }}.gif'/></div>
     <div class="pure-u-1-7"><p>{{ data.currency }}</p></div>
-    <div class="pure-u-1-7"><p>{{ data.history30Day }}</p></div>
+    <div class="pure-u-1-7"><p>{{ ((data.history/data.rate)*100) | number :1 }}% {{selectedDate.date}}</p></div>
     <div class="pure-u-1-7"><p>{{ data.rate | number }}</p></div>
     <div class="pure-u-1-7"><input ng-model='amount' placeholder="0.00" type="number"></div>
     <div class="pure-u-1-7"><p>{{ amount / data.rate | currency}}</p></div>

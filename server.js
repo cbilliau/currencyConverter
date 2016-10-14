@@ -74,9 +74,25 @@ app.get('/api', function(req, response) {
             });
         } else {
             // if no response then send error
-            res.status(500).json({message: 'Internal Server Error BLAH'});
+            res.status(500).json({message: 'Internal Server Error'});
         }
     });
+});
+
+app.get('/api/:date', function(req, response) {
+  console.log('get historical currency...');
+  date = req.params.date;
+  console.log(req.params);
+  auth(req).then(function(reply) {
+    if (reply) {
+      http.get('http://api.fixer.io/' + date + '?base=USD', function(res) {
+        console.log(res.statusMessage);
+        res.pipe(response);
+      });
+    } else {
+      res.status(500).json({message: 'Internal Server Error'});
+    }
+  });
 });
 
 app.put('/user/addCurency', function(req, res) {

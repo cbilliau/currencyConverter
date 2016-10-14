@@ -1,5 +1,6 @@
 viewsModule.controller('MainController', [
     '$scope',
+    '$location',
     'pullUsersCurCodes',
     'getCurQuotes',
     'setUserQuotes',
@@ -8,8 +9,8 @@ viewsModule.controller('MainController', [
     'removeCurrency',
     'dataShare',
     'AuthenticationService',
-    '$location',
-    function($scope, pullUsersCurCodes, getCurQuotes, setUserQuotes, updateCurrencies, addCurency, removeCurrency, dataShare, AuthenticationService, $location) {
+    'changeDate',
+    function($scope, $locatio, pullUsersCurCodes, getCurQuotes, setUserQuotes, updateCurrencies, addCurency, removeCurrency, dataShare, AuthenticationService, changeDate) {
 
         var countriesList = {
             AUD: "Australian Dollar",
@@ -47,6 +48,14 @@ viewsModule.controller('MainController', [
             TRY: "Turkish Lira",
             ZAR: "South African Rand"
         }; //
+
+        var historyList = [
+          {date: 'today', value: null},
+          {date: '6mos', value: 6},
+          {date: '12mos', value: 12},
+          {date: '18mos', value: 18},
+          {date: '24mos', value: 24}
+        ];
         // ================ View =========================
 
         // recieve user data from login controller via dataShare service
@@ -54,21 +63,29 @@ viewsModule.controller('MainController', [
 
             // load in user's currency schema
             $scope.data = dataShare.getData();
-            console.log($scope.data);
+            // console.log($scope.data);
 
             // expose user's userCurrencies arr to scope
             $scope.userData = $scope.data.userCurrencies;
-            console.log($scope.userData);
+            // console.log($scope.userData);
 
             // countries list
             $scope.countries = countriesList;
+            $scope.dates = historyList;
 
             // get currency quotes
             var currencyRates;
             var currencyList = getCurQuotes().then(function(response) {
-                console.log(response.data);
+                // console.log(response.data);
                 currencyRates = response.data.rates;
             });
+
+            // change history
+            $scope.changeDate = function($event){
+              // console.log($scope.selectedDate);
+              changeDate($scope.selectedDate, $scope.data);
+              // $scope.selectedDate = "";
+            };
 
             // add currency to
             $scope.currencyAdd = function($event) {
