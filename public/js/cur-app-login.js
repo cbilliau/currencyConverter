@@ -19,8 +19,8 @@ viewsModule.controller('LoginController', [
                 if (response.success) {
                     AuthenticationService.SetCredentials($scope.username, $scope.password);
                     AuthenticationService.GetData(function(response) {
-                      dataShare.sendData(response); // share data with app
-                      $location.path('/main');
+                        dataShare.sendData(response); // share data with app
+                        $location.path('/main');
                     });
                 } else {
                     $scope.formInvalid = true;
@@ -38,8 +38,8 @@ viewsModule.controller('LoginController', [
                 if (response.success) {
                     AuthenticationService.SetCredentials($scope.username, $scope.password);
                     AuthenticationService.GetData(function(response) {
-                      dataShare.sendData(response); // share data with app
-                      $location.path('/main');
+                        dataShare.sendData(response); // share data with app
+                        $location.path('/main');
                     });
                 } else {
                     $scope.formInvalid = true;

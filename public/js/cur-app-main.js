@@ -12,7 +12,7 @@ viewsModule.controller('MainController', [
     'changeDate',
     function($scope, $location, pullUsersCurCodes, getCurQuotes, setUserQuotes, updateCurrencies, addCurency, removeCurrency, dataShare, AuthenticationService, changeDate) {
 
-        var countriesList = {
+var countriesList = {
             AUD: "Australian Dollar",
             BGN: "Bulgarian Lev",
             BRL: "Brazilian Real",

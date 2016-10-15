@@ -8,9 +8,7 @@ viewsModule.config([
         }).when('/', {
             controller: 'MainController',
             templateUrl: './main.html'
-        }).when('/error', {
-            template: '<p>Error - Page Not Found</p>'
-        }).otherwise('/error');
+        }).when('/error', {template: '<p>Error - Page Not Found</p>'}).otherwise('/error');
     }
 
 ]).run(function($rootScope, $location, $timeout) {
@@ -21,6 +19,6 @@ viewsModule.config([
         $rootScope.isLoading = true;
     });
     $rootScope.$on('$routeChangeSuccess', function() {
-            $rootScope.isLoading = false;
+        $rootScope.isLoading = false;
     });
 });

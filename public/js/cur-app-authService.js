@@ -38,7 +38,7 @@ angular.module('curAuthServ', []).factory('AuthenticationService', [
                 username: username,
                 password: password
             }).success(function(response) {
-              console.log(response);
+                console.log(response);
                 callback(response);
             });
 
