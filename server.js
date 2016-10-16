@@ -3,12 +3,15 @@ const http = require('http');
 const auth = require('./config/auth.js').auth;
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-mongoose.Promise = global.Promise;
 const config = require('./config/config.js');
 const User = require('./models/users.js');
 const Currency = require('./models/currencies.js');
 const path = require('path');
+const bcrypt = require('bcrypt');
+const passport = require('passport'); // For auth
+const BasicStrategy = require('passport-http').BasicStrategy; // For auth
 const app = express();
+mongoose.Promise = global.Promise;
 
 // config
 app.use(bodyParser.json());

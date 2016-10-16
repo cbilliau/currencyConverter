@@ -12,7 +12,10 @@ viewsModule.controller('MainController', [
     'changeDate',
     function($scope, $location, pullUsersCurCodes, getCurQuotes, setUserQuotes, updateCurrencies, addCurency, removeCurrency, dataShare, AuthenticationService, changeDate) {
 
-var countriesList = {
+// var
+        var currencyRates;
+
+        var countriesList = {
             AUD: "Australian Dollar",
             BGN: "Bulgarian Lev",
             BRL: "Brazilian Real",
@@ -21,7 +24,7 @@ var countriesList = {
             CNY: "Chinese Yuan",
             CZK: "Czech Republic Koruna",
             DKK: "Danish Krone",
-            EUR: 'Euro',
+            EUR: "Euro",
             GBP: "British Pound Sterling",
             HKD: "Hong Kong Dollar",
             HRK: "Croatian Kuna",
@@ -50,13 +53,25 @@ var countriesList = {
         }; //
 
         var historyList = [
-          {date: 'today', value: null},
-          {date: '6mos', value: 6},
-          {date: '12mos', value: 12},
-          {date: '18mos', value: 18},
-          {date: '24mos', value: 24}
+            {
+                date: 'today',
+                value: null
+            }, {
+                date: '6mos',
+                value: 6
+            }, {
+                date: '12mos',
+                value: 12
+            }, {
+                date: '18mos',
+                value: 18
+            }, {
+                date: '24mos',
+                value: 24
+            }
         ];
-        // ================ View =========================
+
+// $scope
 
         // recieve user data from login controller via dataShare service
         $scope.$on('data_shared', function() {
@@ -74,23 +89,22 @@ var countriesList = {
             $scope.dates = historyList;
 
             // get currency quotes
-            var currencyRates;
             var currencyList = getCurQuotes().then(function(response) {
                 // console.log(response.data);
                 currencyRates = response.data.rates;
             });
 
             // change history
-            $scope.changeDate = function($event){
-              // console.log($scope.selectedDate);
-              changeDate($scope.selectedDate, $scope.data);
-              $scope.selectedDate = "";
+            $scope.changeDate = function($event) {
+                // console.log($scope.selectedDate);
+                changeDate($scope.selectedDate, $scope.data);
+                $scope.selectedDate = '';
             };
 
             // add currency to
             $scope.currencyAdd = function($event) {
                 addCurency($scope.currencyItemAdd, $scope.data, currencyRates);
-                $scope.currencyItemAdd = "";
+                $scope.currencyItemAdd = '';
                 // console.log($scope.userData);
             };
 
@@ -100,9 +114,9 @@ var countriesList = {
             };
 
             // logout
-            $scope.logout = function(){
-              AuthenticationService.ClearCredentials();
-              $location.path('/login');
+            $scope.logout = function() {
+                AuthenticationService.ClearCredentials();
+                $location.path('/login');
             }
         });
     }
