@@ -8,8 +8,8 @@ const User = require('./models/users.js');
 const Currency = require('./models/currencies.js');
 const path = require('path');
 const bcrypt = require('bcrypt');
-const passport = require('passport'); // For auth
-const BasicStrategy = require('passport-http').BasicStrategy; // For auth
+const passport = require('passport');
+const BasicStrategy = require('passport-http').BasicStrategy;
 const app = express();
 mongoose.Promise = global.Promise;
 
@@ -21,6 +21,7 @@ app.use(passport.initialize());
 
 // strategy
 var strategy = new BasicStrategy(function(username, password, callback) {
+    console.log('BasicStrategy...');
     User.findOne({
         username: username
     }, function(err, user) {
@@ -30,9 +31,8 @@ var strategy = new BasicStrategy(function(username, password, callback) {
         }
 
         if (!user) {
-            return callback(null, false, {
-                message: 'Incorrect username.'
-            });
+            console.log('incorrect username');
+            return callback(null, false, {message: 'Incorrect username.'});
         }
 
         user.validatePassword(password, function(err, isValid) {
@@ -41,9 +41,8 @@ var strategy = new BasicStrategy(function(username, password, callback) {
             }
 
             if (!isValid) {
-                return callback(null, false, {
-                    message: 'Incorrect password.'
-                });
+                console.log('incorrect password');
+                return callback(null, false, {message: 'Incorrect password.'});
             }
             return callback(null, user);
         });
@@ -56,102 +55,93 @@ app.post('/signup', function(req, res) {
     console.log('signup');
 
     if (!req.body) {
-        return res.status(400).json({
-            message: "No request body"
-        });
+        return res.status(400).json({message: "No request body"});
     }
 
     if (!('username' in req.body)) {
-        return res.status(422).json({
-            message: 'Missing field: username'
-        });
+        return res.status(422).json({message: 'Missing field: username'});
     }
 
     var username = req.body.username;
 
     if (typeof username !== 'string') {
-        return res.status(422).json({
-            message: 'Incorrect field type: username'
-        });
+        return res.status(422).json({message: 'Incorrect field type: username'});
     }
 
     username = username.trim();
 
     if (username === '') {
-        return res.status(422).json({
-            message: 'Incorrect field length: username'
-        });
+        return res.status(422).json({message: 'Incorrect field length: username'});
     }
 
     if (!('password' in req.body)) {
-        return res.status(422).json({
-            message: 'Missing field: password'
-        });
+        return res.status(422).json({message: 'Missing field: password'});
     }
 
     var password = req.body.password;
 
     if (typeof password !== 'string') {
-        return res.status(422).json({
-            message: 'Incorrect field type: password'
-        });
+        return res.status(422).json({message: 'Incorrect field type: password'});
     }
 
     password = password.trim();
 
     if (password === '') {
-        return res.status(422).json({
-            message: 'Incorrect field length: password'
-        });
+        return res.status(422).json({message: 'Incorrect field length: password'});
     }
     // Ecnryption
     // Generate salt
     bcrypt.genSalt(10, function(err, salt) {
         if (err) {
-            return res.status(500).json({
-                message: 'Internal server error'
-            });
+            return res.status(500).json({message: 'Internal server error'});
         }
 
         bcrypt.hash(password, salt, function(err, hash) {
             if (err) {
-                return res.status(500).json({
-                    message: 'Internal server error'
-                });
+                return res.status(500).json({message: 'Internal server error'});
             }
 
-            var user = new User({
-                username: username,
-                password: hash,
-
-            });
+            var user = new User({username: username, password: hash});
 
             user.save(function(err) {
                 if (err) {
                     console.log(err);
                     return res.status(500).json({success: false});
                 }
-
+                console.log("successfully saved new user !");
                 return res.status(201).json({success: true});
-                console.log("successfully saved currency data for user !");
 
             });
         });
     });
 });
 
-app.post('/login', function(req, res) {
+app.post('/login',
+    passport.authenticate('basic', {
+    session: false
+}),
+    function(req, res) {
     console.log('login');
-    var username = req.body.username;
-    var password = req.body.password;
-    var login = username + ':' + password;
-    // console.log(login);
-    auth(login).then(function(response) {
-        if (response === null) {
-            res.status(201).json({success: false})
+    var userName = req.params.username;
+    User.findOne({
+        'username': userName
+    }, function(err, user) {
+        if (err) {
+            return res.status(500).json({success: false});
         }
-        res.status(201).json({success: true})
+        res.status(201).json({success: true});
     });
+    // var username = req.body.username;
+    // var password = req.body.password;
+    // var login = username + ':' + password;
+    // // console.log(login);
+    // auth(login).then(function(response) {
+    //     if (response === null) {
+    //         res.status(201).json({success: false})
+    //     }
+    //     res.status(201).json({success: true})
+    // });
+
 });
 
 app.get('/login/data', function(req, res) {
