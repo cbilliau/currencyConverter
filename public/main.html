@@ -32,7 +32,7 @@
 
   <!-- User's currency rates -->
   <div ng-repeat="data in userData" class="pure-g custom-text-center fade">
-    <div class="pure-u-1-7"><img class="flag" src='http://www.geonames.org/flags/x/{{ data.flag | lowercase | limitTo:2 }}.gif'/></div>
+    <div class="pure-u-1g-7"><img class="flag" src='http://www.geonames.org/flags/x/{{ data.flag | lowercase | limitTo:2 }}.gif'/></div>
     <div class="pure-u-1-7"><p>{{ data.currency }}</p></div>
     <div class="pure-u-1-7"><p>{{ (data.history/data.rate)*10 | number :1 }}% {{selectedDate.date}}</p></div>
     <div class="pure-u-1-7"><p>{{ data.rate | number }}</p></div>
