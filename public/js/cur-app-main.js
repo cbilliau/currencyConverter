@@ -99,6 +99,7 @@ viewsModule.controller('MainController', [
             $scope.changeDate = function($event) {
                 // console.log($scope.selectedDate);
                 changeDate($scope.selectedDate, $scope.data);
+                $scope.historyDate = $scope.selectedDate;
                 $scope.selectedDate = '';
             };
 

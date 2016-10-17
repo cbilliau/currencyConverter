@@ -47,6 +47,11 @@ angular.module('curAppLib', [])
     '$http',
     function($http) {
         return function(currencyArray) {
+    // reseaching way to prevent saving rates but app uses db to store rates for display
+          // for (index in currencyArray) {
+          //     currencyArray[index].rate = null;
+          //     currencyArray[index].history = null;
+          // }
             return $http.put('/user/addCurency', {currencyArray: currencyArray}).success(function(response) {
                 console.log(response);
                 return response;

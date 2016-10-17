@@ -30,11 +30,11 @@
   <div ng-repeat="data in userData" class="pure-g custom-text-center fade">
   <img class="pure-u-1-7 flag" src='http://www.geonames.org/flags/x/{{ data.flag | lowercase | limitTo:2 }}.gif'/>
   <div class="pure-u-1-7"><p>{{ data.currency }}</p></div>
-    <div class="pure-u-1-7"><p>{{ (data.history/data.rate)*10 | number :1 }}% {{selectedDate.date}}</p></div>
+    <div class="pure-u-1-7"><p ng-show="data.history && historyDate.date">{{ (((data.rate - data.history)/data.rate)*100) | number :1 }}% {{historyDate.date}}</p></div>
     <div class="pure-u-1-7"><p>{{ data.rate | number }}</p></div>
   <div class="pure-u-1-7"><input ng-model='amount' placeholder="$ 0.00" type="number"></div>
   <div class="pure-u-1-7"><p>{{ amount / data.rate | currency}}</p></div>
-  <div class="pure-u-1-7"><button class="button-small button-secondary pure-button" ng-model="currencyItemRemove" ng-click="currencyRemove(data)">Remove</button></div>
+  <div class="pure-u-1-7"><button class="button-small pure-button pure-button-secondary" ng-model="currencyItemRemove" ng-click="currencyRemove(data)">Remove</button></div>
 </div>
 
 </div>
