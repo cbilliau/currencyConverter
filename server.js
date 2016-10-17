@@ -19,10 +19,10 @@ app.use(express.static('public'));
 app.use(express.static('node_modules'));
 app.use(passport.initialize());
 
-
 // strategy
 var strategy = new BasicStrategy(function(username, password, callback) {
     console.log('BasicStrategy...');
+
     User.findOne({
         username: username
     }, function(err, user) {
@@ -122,8 +122,12 @@ app.post('/signup', function(req, res) {
     });
 });
 
-app.post('/login', passport.authenticate('basic', {session: false}), function(req, res) {
-    console.log('login');
+app.post('/login',
+
+// passport.authenticate('basic', {session: false}),
+
+function(req, res) {
+    console.log('login', req.body);
     var userName = req.params.username;
     User.findOne({
         'username': userName

@@ -74,6 +74,13 @@ angular.module('curAppLib', [])
                 history: null,
                 rate: null
             };
+            // get the 3 ltr currency codes from data obj
+            let oldCodes = pullUsersCurCodes(data.userCurrencies);
+            for (i = 0; i < data.userCurrencies.length; i++) {
+                if (flag == data.userCurrencies[i].flag){
+                  return;
+                }
+            }
             // push the new currency obj into the data obj's userCurrencies arr
             data.userCurrencies.push(currencyToAdd);
             // get the 3 ltr currency codes from data obj
