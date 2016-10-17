@@ -26,7 +26,10 @@ angular.module('curAuthServ', []).factory('AuthenticationService', [
             $http.post('/login', {
                 username: username,
                 password: password
-            }).success(function(response) {
+            },
+            {headers: {
+              'X-Requested-With': 'XMLHttpRequest'
+            }}).success(function(response) {
                 console.log(response);
                 callback(response);
             });

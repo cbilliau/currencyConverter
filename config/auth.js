@@ -14,6 +14,7 @@ exports.auth = function(req) {
             'username': username,
             'password': password
         }, function(err, user) {
+          console.log(user);
             if (err) {
                 return err;
             }

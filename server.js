@@ -7,7 +7,7 @@ const config = require('./config/config.js');
 const User = require('./models/users.js');
 const Currency = require('./models/currencies.js');
 const path = require('path');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const BasicStrategy = require('passport-http').BasicStrategy;
 const app = express();
@@ -17,11 +17,11 @@ mongoose.Promise = global.Promise;
 app.use(bodyParser.json());
 app.use(express.static('public'));
 app.use(express.static('node_modules'));
-app.use(passport.initialize());
+
 
 // strategy
 var strategy = new BasicStrategy(function(username, password, callback) {
-    console.log('BasicStrategy...');
+    console.log('BasicStrategy...' + username + ' ' + password);
 
     User.findOne({
         username: username
@@ -50,6 +50,7 @@ var strategy = new BasicStrategy(function(username, password, callback) {
     });
 });
 passport.use(strategy);
+app.use(passport.initialize());
 
 // routes
 app.post('/signup', function(req, res) {
@@ -122,32 +123,9 @@ app.post('/signup', function(req, res) {
     });
 });
 
-app.post('/login',
-
-// passport.authenticate('basic', {session: false}),
-
-function(req, res) {
-    console.log('login', req.body);
-    var userName = req.params.username;
-    User.findOne({
-        'username': userName
-    }, function(err, user) {
-        if (err) {
-            return res.status(500).json({success: false});
-        }
-        res.status(201).json({success: true});
-    });
-    // var username = req.body.username;
-    // var password = req.body.password;
-    // var login = username + ':' + password;
-    // // console.log(login);
-    // auth(login).then(function(response) {
-    //     if (response === null) {
-    //         res.status(201).json({success: false})
-    //     }
-    //     res.status(201).json({success: true})
-    // });
-
+app.post('/login', passport.authenticate('basic', {session: false, failureRedirect: '/'}),
+    function(req, res) {
+    res.status(201).json({success: true});
 });
 
 app.get('/login/data', function(req, res) {
