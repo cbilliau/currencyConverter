@@ -18,7 +18,6 @@ app.use(bodyParser.json());
 app.use(express.static('public'));
 app.use(express.static('node_modules'));
 
-
 // strategy
 var strategy = new BasicStrategy(function(username, password, callback) {
     console.log('BasicStrategy...' + username + ' ' + password);
@@ -45,6 +44,7 @@ var strategy = new BasicStrategy(function(username, password, callback) {
                 console.log('incorrect password');
                 return callback(null, false, {message: 'Incorrect password.'});
             }
+            console.log('user ok');
             return callback(null, user);
         });
     });
@@ -123,19 +123,25 @@ app.post('/signup', function(req, res) {
     });
 });
 
-app.post('/login', passport.authenticate('basic', {session: false, failureRedirect: '/'}),
-    function(req, res) {
+app.post('/login', passport.authenticate('basic', {
+    session: false,
+    failureRedirect: '/'
+}), function(req, res) {
     res.status(201).json({success: true});
 });
 
-app.get('/login/data', function(req, res) {
-    console.log('get user data...');
-    auth(req).then(function(response) {
-        // console.log(response);
-        if (response === null) {
-            res.status(201).json({success: false})
+app.get('/login/data', passport.authenticate('basic', {
+    session: false
+}), function(req, res) {
+    let username = req.user.username;
+    Currency.findOne({
+      'username': username
+    }, function(err, user) {
+        if (err) {
+            console.log (err);
+            return res.status(500).json({success: false});
         }
-        res.status(201).json(response)
+        res.status(200).json(user);
     });
 });
 

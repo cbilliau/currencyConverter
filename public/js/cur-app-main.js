@@ -54,9 +54,6 @@ viewsModule.controller('MainController', [
 
         var historyList = [
             {
-                date: 'today',
-                value: null
-            }, {
                 date: '6mos',
                 value: 6
             }, {
