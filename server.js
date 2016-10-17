@@ -1,6 +1,5 @@
 const express = require('express');
 const http = require('http');
-const auth = require('./config/auth.js').auth;
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const config = require('./config/config.js');
@@ -20,7 +19,7 @@ app.use(express.static('node_modules'));
 
 // strategy
 var strategy = new BasicStrategy(function(username, password, callback) {
-    console.log('BasicStrategy...' + username + ' ' + password);
+    console.log('BasicStrategy...');
 
     User.findOne({
         username: username
@@ -130,71 +129,45 @@ app.post('/login', passport.authenticate('basic', {
     res.status(201).json({success: true});
 });
 
-app.get('/login/data', passport.authenticate('basic', {
-    session: false
-}), function(req, res) {
+app.get('/login/data', passport.authenticate('basic', {session: false}), function(req, res) {
     let username = req.user.username;
     Currency.findOne({
-      'username': username
+        'username': username
     }, function(err, user) {
         if (err) {
-            console.log (err);
+            console.log(err);
             return res.status(500).json({success: false});
         }
         res.status(200).json(user);
     });
 });
 
-app.get('/api', function(req, response) {
-    // pull three ltr codes from header
+app.get('/api', passport.authenticate('basic', {session: false}), function(req, response) {
     console.log('get currency list...');
-    auth(req).then(function(reply) {
-        // if reply then call api
-        if (reply) {
-            http.get('http://api.fixer.io/latest?base=USD', function(res) {
-                // console.log(res);
-                res.pipe(response);
-            });
-        } else {
-            // if no response then send error
-            res.status(500).json({message: 'Internal Server Error'});
-        }
+    http.get('http://api.fixer.io/latest?base=USD', function(res) {
+        res.pipe(response);
     });
 });
 
-app.get('/api/:date', function(req, response) {
+app.get('/api/:date', passport.authenticate('basic', {session: false}), function(req, response) {
     console.log('get historical currency...');
     date = req.params.date;
-    console.log(req.params);
-    auth(req).then(function(reply) {
-        if (reply) {
-            http.get('http://api.fixer.io/' + date + '?base=USD', function(res) {
-                console.log(res.statusMessage);
-                res.pipe(response);
-            });
-        } else {
-            res.status(500).json({message: 'Internal Server Error'});
-        }
+    http.get('http://api.fixer.io/' + date + '?base=USD', function(res) {
+        res.pipe(response);
     });
 });
 
-app.put('/user/addCurency', function(req, res) {
+app.put('/user/addCurency', passport.authenticate('basic', {session: false}), function(req, res) {
     console.log('putting currency in user account...');
-    var newCurrencyArray = req.body.currencyArray;
-    auth(req).then(function(response) {
-        if (response === null) {
-            res.status(201).json({error: false})
+    let id = req.user._id;
+    let newCurrencyArray = req.body.currencyArray;
+    Currency.findByIdAndUpdate(id, {
+        userCurrencies: newCurrencyArray
+    }, function(err, data) {
+        if (err) {
+            return res.status(500).json({success: false});
         }
-        var key = response._id;
-        console.log(key);
-        Currency.findByIdAndUpdate(key, {
-            userCurrencies: newCurrencyArray
-        }, function(err, data) {
-            if (err) {
-                return res.status(500).json({message: 'Internal Server Error'});
-            }
-            res.status(201).json({success: true});
-        });
+        res.status(201).json({success: true});
     });
 });
 
