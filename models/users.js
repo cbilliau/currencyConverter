@@ -1,7 +1,8 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 mongoose.Promise = global.Promise;
 
-var UserSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
     username: {
         type: String,
         unique: true,

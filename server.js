@@ -19,6 +19,7 @@ app.use(express.static('public'));
 app.use(express.static('node_modules'));
 app.use(passport.initialize());
 
+
 // strategy
 var strategy = new BasicStrategy(function(username, password, callback) {
     console.log('BasicStrategy...');
@@ -102,25 +103,26 @@ app.post('/signup', function(req, res) {
             }
 
             var user = new User({username: username, password: hash});
+            var currency = new Currency({username: username, userCurrencies: []});
 
-            user.save(function(err) {
-                if (err) {
-                    console.log(err);
-                    return res.status(500).json({success: false});
-                }
-                console.log("successfully saved new user !");
-                return res.status(201).json({success: true});
-
+            user.save().then(function() {
+                console.log("successfully saved user!");
+                return currency.save();
+            }, function(err) {
+                console.log("error saving user! " + err.errmsg);
+                return res.status(201).json({success: false});
+            }).then(function() {
+                console.log("successfully saved currency data for user !");
+                res.status(201).json({success: true});
+            }, function(err) {
+                res.status(201).json({success: false});
+                console.log("error saving currency for user!");
             });
         });
     });
 });
 
-app.post('/login',
-    passport.authenticate('basic', {
-    session: false
-}),
-    function(req, res) {
+app.post('/login', passport.authenticate('basic', {session: false}), function(req, res) {
     console.log('login');
     var userName = req.params.username;
     User.findOne({

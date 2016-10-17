@@ -80,6 +80,7 @@ viewsModule.controller('MainController', [
             $scope.data = dataShare.getData();
             // console.log($scope.data);
 
+            $scope.loggedIn = true;
             // expose user's userCurrencies arr to scope
             $scope.userData = $scope.data.userCurrencies;
             // console.log($scope.userData);
@@ -116,6 +117,7 @@ viewsModule.controller('MainController', [
             // logout
             $scope.logout = function() {
                 AuthenticationService.ClearCredentials();
+                $scope.loggedIn = false;
                 $location.path('/login');
             }
         });
