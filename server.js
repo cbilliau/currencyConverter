@@ -1,3 +1,5 @@
+'use strict';
+
 const express = require('express');
 const http = require('http');
 const bodyParser = require('body-parser');
@@ -159,9 +161,9 @@ app.get('/api/:date', passport.authenticate('basic', {session: false}), function
 
 app.put('/user/addCurency', passport.authenticate('basic', {session: false}), function(req, res) {
     console.log('putting currency in user account...');
-    let id = req.user._id;
+    let username = req.user.username;
     let newCurrencyArray = req.body.currencyArray;
-    Currency.findByIdAndUpdate(id, {
+    Currency.update({username: username}, {
         userCurrencies: newCurrencyArray
     }, function(err, data) {
         if (err) {
