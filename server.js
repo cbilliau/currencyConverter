@@ -152,8 +152,8 @@ app.get('/api', passport.authenticate('basic', {session: false}), function(req, 
 });
 
 app.get('/api/:date', passport.authenticate('basic', {session: false}), function(req, response) {
-    console.log('get historical currency...');
-    date = req.params.date;
+    console.log('get historical currency...', req.params);
+    let date = req.params.date;
     http.get('http://api.fixer.io/' + date + '?base=USD', function(res) {
         res.pipe(response);
     });

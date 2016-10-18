@@ -116,6 +116,7 @@ viewsModule.controller('MainController', [
             $scope.logout = function() {
                 AuthenticationService.ClearCredentials();
                 $scope.loggedIn = false;
+                $scope.userData = null;
                 $location.path('/login');
             }
         });
