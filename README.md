@@ -1,6 +1,6 @@
 # CURRENT-C
 
-This app allows a user to select multiple currency exchange rates and convert foreign currencies into US dollars.
+This app allows a user to create a user account, select multiple currency exchange rates, and convert foreign currencies into US dollars. Chosen currencies are saved to the user's account.
 
 
 ## Getting Started
@@ -16,7 +16,7 @@ A step by step series of examples that tell you have to get a development env ru
 
 2. cd into the project directory and run 'npm install'.
 
-4. run 'node server.js'.
+4. Run 'node server.js'.
 
 5. Open a browser at localhost:8080.
 
@@ -27,4 +27,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-* https://currencylayer.com
+* http://fixer.io - Fixer.io is a free JSON API for current and historical foreign exchange rates published by the European Central Bank.

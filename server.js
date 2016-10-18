@@ -163,7 +163,9 @@ app.put('/user/addCurency', passport.authenticate('basic', {session: false}), fu
     console.log('putting currency in user account...');
     let username = req.user.username;
     let newCurrencyArray = req.body.currencyArray;
-    Currency.update({username: username}, {
+    Currency.update({
+        username: username
+    }, {
         userCurrencies: newCurrencyArray
     }, function(err, data) {
         if (err) {
