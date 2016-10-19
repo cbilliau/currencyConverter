@@ -62,7 +62,7 @@ angular.module('curAuthServ', []).factory('AuthenticationService', [
                 }
             };
             $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata; // jshint ignore:line
-            $cookies.put('globals', $rootScope.globals);
+            $cookies.putObject('globals', $rootScope.globals);
         };
 
         service.ClearCredentials = function() {
