@@ -1,4 +1,4 @@
-angular.module('curAuthServ', []).factory('AuthenticationService', [
+angular.module('curApiServ', []).factory('ApiService', [
     'Base64',
     '$http',
     '$cookies',

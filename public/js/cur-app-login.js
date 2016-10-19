@@ -2,12 +2,12 @@ viewsModule.controller('LoginController', [
     '$scope',
     '$rootScope',
     '$location',
-    'AuthenticationService',
+    'ApiService',
     'dataShare',
-    function($scope, $rootScope, $location, AuthenticationService, dataShare) {
+    function($scope, $rootScope, $location, ApiService, dataShare) {
 
         // reset login status
-        AuthenticationService.ClearCredentials();
+        ApiService.ClearCredentials();
 
         // validation
         $scope.formInvalid = false;
@@ -15,15 +15,15 @@ viewsModule.controller('LoginController', [
         // login
         $scope.login = function() {
             $scope.dataLoading = true;
-            AuthenticationService.SetCredentials($scope.username, $scope.password);
-            AuthenticationService.Login($scope.username, $scope.password, function(response) {
+            ApiService.SetCredentials($scope.username, $scope.password);
+            ApiService.Login($scope.username, $scope.password, function(response) {
                 if (response.success) {
-                    AuthenticationService.GetData(function(response) {
+                    ApiService.GetData(function(response) {
                         dataShare.sendData(response); // share data with app
                         $location.path('/main');
                     });
                 } else {
-                    AuthenticationService.ClearCredentials();
+                    ApiService.ClearCredentials();
                     $scope.formInvalid = true;
                     $scope.loginMsg = "Username not found or password may be incorrect";
                     $scope.error = response.message;
@@ -35,10 +35,10 @@ viewsModule.controller('LoginController', [
         // signup
         $scope.signup = function() {
             $scope.dataLoading = true;
-            AuthenticationService.Signup($scope.username, $scope.password, function(response) {
+            ApiService.Signup($scope.username, $scope.password, function(response) {
                 if (response.success) {
-                    AuthenticationService.SetCredentials($scope.username, $scope.password);
-                    AuthenticationService.GetData(function(response) {
+                    ApiService.SetCredentials($scope.username, $scope.password);
+                    ApiService.GetData(function(response) {
                         dataShare.sendData(response); // share data with app
                         $location.path('/main');
                     });

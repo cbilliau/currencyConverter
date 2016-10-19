@@ -8,9 +8,9 @@ viewsModule.controller('MainController', [
     'addCurency',
     'removeCurrency',
     'dataShare',
-    'AuthenticationService',
+    'ApiService',
     'changeDate',
-    function($scope, $location, pullUsersCurCodes, getCurQuotes, setUserQuotes, updateCurrencies, addCurency, removeCurrency, dataShare, AuthenticationService, changeDate) {
+    function($scope, $location, pullUsersCurCodes, getCurQuotes, setUserQuotes, updateCurrencies, addCurency, removeCurrency, dataShare, ApiService, changeDate) {
 
 // var
         var currencyRates;
@@ -114,7 +114,7 @@ viewsModule.controller('MainController', [
 
             // logout
             $scope.logout = function() {
-                AuthenticationService.ClearCredentials();
+                ApiService.ClearCredentials();
                 $scope.loggedIn = false;
                 $scope.userData = null;
                 $location.path('/login');
