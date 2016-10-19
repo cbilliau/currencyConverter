@@ -30,7 +30,6 @@ angular.module('curApiServ', []).factory('ApiService', [
             {headers: {
               'X-Requested-With': 'XMLHttpRequest'
             }}).success(function(response) {
-                console.log(response);
                 callback(response);
             });
 
@@ -41,7 +40,7 @@ angular.module('curApiServ', []).factory('ApiService', [
                 username: username,
                 password: password
             }).success(function(response) {
-                console.log(response);
+                // console.log(response);
                 callback(response);
             });
 

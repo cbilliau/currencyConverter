@@ -14,10 +14,9 @@ currencyApp.run([
         // keep user logged in after page refresh
         $rootScope.globals = $cookies.getObject('globals') || {};
         if ($rootScope.globals.currentUser) { // successfull entry point
-            $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata; // jshint ignore:line
+            $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata;
             ApiService.GetData(function(response) {
                 dataShare.sendData(response); // share data with app
-                //$location.path('/main');
             });
         }
 

@@ -22,7 +22,7 @@ angular.module('curAppLib', [])
     function($http) {
         return function() {
             return $http.get('/api').success(function(response) {
-                console.log(response);
+                // console.log(response);
                 return response;
             });
         };
@@ -35,7 +35,7 @@ angular.module('curAppLib', [])
     function($http) {
         return function(date) {
             return $http.get('/api/' + date).success(function(response) {
-                console.log(response);
+                // console.log(response);
                 return response;
             });
         };
@@ -47,13 +47,8 @@ angular.module('curAppLib', [])
     '$http',
     function($http) {
         return function(currencyArray) {
-    // reseaching way to prevent saving rates but app uses db to store rates for display
-          // for (index in currencyArray) {
-          //     currencyArray[index].rate = null;
-          //     currencyArray[index].history = null;
-          // }
             return $http.put('/user/addCurency', {currencyArray: currencyArray}).success(function(response) {
-                console.log(response);
+                // console.log(response);
                 return response;
             })
         }
@@ -82,8 +77,8 @@ angular.module('curAppLib', [])
             // get the 3 ltr currency codes from data obj
             let oldCodes = pullUsersCurCodes(data.userCurrencies);
             for (i = 0; i < data.userCurrencies.length; i++) {
-                if (flag == data.userCurrencies[i].flag){
-                  return;
+                if (flag == data.userCurrencies[i].flag) {
+                    return;
                 }
             }
             // push the new currency obj into the data obj's userCurrencies arr
@@ -93,7 +88,7 @@ angular.module('curAppLib', [])
             // update userCurrencies with latest rates
             let quotes = updateCurrencies(newCodes, data.userCurrencies, currencyList);
             let updatedData = setUserQuotes(quotes, data.userCurrencies);
-            console.log(updatedData);
+            // console.log(updatedData);
             // update userCurrencies arr to user account in
             putCurrencyArray(updatedData);
             userData = updatedData;
@@ -116,9 +111,8 @@ angular.module('curAppLib', [])
                     // console.log(newCodes);
                     let quotes = updateCurrencies(newCodes, data.userCurrencies, currencyList);
                     let updatedData = setUserQuotes(quotes, data.userCurrencies);
-                    // console.log(updatedData);
-                    // update userCurrencies arr to user account in
-                    putCurrencyArray(updatedData);
+                    console.log(updatedData);
+                    putCurrencyArray(updatedData); // update userCurrencies arr to user account in
                     userData = updatedData;
                 }
             }
@@ -197,7 +191,7 @@ angular.module('curAppLib', [])
                         }
                     }
                 }
-                console.log(data);
+                // console.log(data);
                 userData = data;
             });
         }

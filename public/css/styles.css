@@ -23,9 +23,6 @@
     height: 75px;
     box-sizing: border-box;
     border: 1px solid lightgrey;
-    /*-moz-transform:scale(0.1);
-  -webkit-transform:scale(0.10);
-  transform:scale(0.1);*/
 }
 
 .right {

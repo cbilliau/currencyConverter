@@ -12,7 +12,7 @@ viewsModule.controller('MainController', [
     'changeDate',
     function($scope, $location, pullUsersCurCodes, getCurQuotes, setUserQuotes, updateCurrencies, addCurency, removeCurrency, dataShare, ApiService, changeDate) {
 
-// var
+        // var
         var currencyRates;
 
         var countriesList = {
@@ -68,7 +68,7 @@ viewsModule.controller('MainController', [
             }
         ];
 
-// $scope
+        // $scope
 
         // recieve user data from login controller via dataShare service
         $scope.$on('data_shared', function() {
