@@ -1,12 +1,16 @@
 # CURRENT-C
 
-This app allows a user to create a user account, select multiple currency exchange rates, and convert foreign currencies into US dollars. Chosen currencies are saved to the user's account.
+This app allows a user to create a an account, select multiple currency exchange rates, and convert foreign currencies into US dollars. Users can choose to see the increase/decrease of  exchange rates over a period of time by choosing the number of months back to compare the current rate to (6 to 24 months). All chosen currencies are saved to the user's account.
 
+![screenshot](/public/assets/screenshot.png "screenshot")
 
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
+## Tech notes
+
+This app uses Angular 1.5 for the client with Pure CSS. The backend uses Node.js running an Express server using Passport for authentication.
 
 ### Installing
 
