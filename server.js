@@ -177,8 +177,7 @@ app.put('/user/addCurency', passport.authenticate('basic', {session: false}), fu
 
 // server (db / http server)
 var runServer = function(callback) {
-    mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/current-c',
-    function(err) {
+    mongoose.connect(config.DATABASE_URL, function(err) {
         if (err && callback) {
             return callback(err);
         }
