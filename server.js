@@ -190,7 +190,7 @@ var runServer = function(callback) {
                 callback();
             }
         });
-    });
+    // });
 };
 
 if (require.main === module) {
