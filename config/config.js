@@ -1,4 +1,4 @@
-exports.DATABASE_URL = process.env.MONGOLAB_URI || 'mongodb://localhost/current-c';
+exports.DATABASE_URL = process.env.MONGODB_URI || 'mongodb://localhost/current-c';
                       //  global.DATABASE_URL ||
                       //  (process.env.NODE_ENV === 'production' ?
                       //       'mongodb://localhost/current-c' :
