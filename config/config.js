@@ -1,6 +1,7 @@
-exports.DATABASE_URL = process.env.DATABASE_URL ||
+exports.DATABASE_URL = process.env.MONGOLAB_URI ||
                        global.DATABASE_URL ||
                        (process.env.NODE_ENV === 'production' ?
                             'mongodb://localhost/current-c' :
                             'mongodb://localhost/current-c-dev');
+
 exports.PORT = process.env.PORT || 8080;
