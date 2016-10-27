@@ -177,11 +177,12 @@ app.put('/user/addCurency', passport.authenticate('basic', {session: false}), fu
 
 // server (db / http server)
 var runServer = function(callback) {
-    mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/current-c',
-    function(err) {
-        if (err && callback) {
-            return callback(err);
-        }
+    mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/current-c');
+    //   process.env.MONGOLAB_URI || 'mongodb://localhost/current-c',
+    // function(err) {
+    //     if (err && callback) {
+    //         return callback(err);
+    //     }
 
         app.listen(config.PORT, function() {
             console.log('Listening on localhost:' + config.PORT);
