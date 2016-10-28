@@ -1,4 +1,4 @@
-# CURRENT-C
+# CURRENT-C - MEAN stack
 
 ![screenshot](/public/assets/screenshot4.png "screenshot")
 
