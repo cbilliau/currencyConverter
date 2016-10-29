@@ -19,6 +19,11 @@ Why is this app useful? There are two basic users who would use this app. The fi
 This app was designed to be visually simple and straight forward. Graphics were kept at a minimum and only used if they would enhance the conveyance of information, such as in the use of country flags along the names of currencies. Colors chosen were purposely subdued and complimentary, again, to keep visual distractions to a minimum.
 
 
+## Working Prototype
+
+You can access a working prototype of the app here: https://chriscurrencyconverter.herokuapp.com/
+
+
 ## Tech notes
 
 ![screenshot](/public/assets/uiflow.png "UIflow")
@@ -32,6 +37,8 @@ This app was designed to be visually simple and straight forward. Graphics were 
 * An API to access the database has been constructed in ExpressJS with 2 key endpoints. The first compares sign-in/log-in data with the user database and the second pulls saved user currency choices.
 
 * All routing is handled in the front-end by Angular 1.5.
+
+* The prototype app is deployed on Heroku.
 
 
 ## Development Roadmap
