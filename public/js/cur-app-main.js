@@ -77,7 +77,9 @@ viewsModule.controller('MainController', [
             $scope.data = dataShare.getData();
             // console.log($scope.data);
 
+            // toggle buttons
             $scope.loggedIn = true;
+
             // expose user's userCurrencies arr to scope
             $scope.userData = $scope.data.userCurrencies;
             // console.log($scope.userData);
