@@ -15,7 +15,7 @@ viewsModule.controller('MainController', [
         // var
         var currencyRates;
 
-        var countriesList = {
+        $scope.countries = {
             AUD: "Australian Dollar",
             BGN: "Bulgarian Lev",
             BRL: "Brazilian Real",
@@ -83,7 +83,6 @@ viewsModule.controller('MainController', [
             // console.log($scope.userData);
 
             // countries list
-            $scope.countries = countriesList;
             $scope.dates = historyList;
 
             // get currency quotes
