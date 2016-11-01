@@ -15,6 +15,8 @@ viewsModule.controller('MainController', [
         // var
         var currencyRates;
 
+        $scope.loggedIn;
+
         $scope.getKey = function(country) {
             return Object.keys(country)[0];
         }
@@ -66,6 +68,14 @@ viewsModule.controller('MainController', [
             }
         ];
 
+        // logout
+        $scope.logout = function() {
+            ApiService.ClearCredentials();
+            $scope.loggedIn = false;
+            $scope.userData = null;
+            $location.path('/login');
+        }
+
         // $scope
 
         // recieve user data from login controller via dataShare service
@@ -73,7 +83,6 @@ viewsModule.controller('MainController', [
 
             // load in user's currency schema
             $scope.data = dataShare.getData();
-            // console.log($scope.data);
 
             // toggle buttons
             $scope.loggedIn = true;
@@ -106,18 +115,14 @@ viewsModule.controller('MainController', [
                 // console.log($scope.userData);
             };
 
+            $scope.$watch("currencyItemAdd", function() {
+                console.log("currencyItemAdd has changed");
+            });
+
             // remove currency from Data cache
             $scope.currencyRemove = function(currencyItem) {
                 removeCurrency(currencyItem, $scope.data, currencyRates);
             };
-
-            // logout
-            $scope.logout = function() {
-                ApiService.ClearCredentials();
-                $scope.loggedIn = false;
-                $scope.userData = null;
-                $location.path('/login');
-            }
         });
     }
 ]);

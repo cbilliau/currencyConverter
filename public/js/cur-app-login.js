@@ -19,8 +19,8 @@ viewsModule.controller('LoginController', [
             ApiService.Login($scope.username, $scope.password, function(response) {
                 if (response.success) {
                     ApiService.GetData(function(response) {
-                        dataShare.sendData(response); // share data with app
                         $location.path('/main');
+                        dataShare.sendData(response); // share data with app
                     });
                 } else {
                     ApiService.ClearCredentials();
@@ -40,7 +40,7 @@ viewsModule.controller('LoginController', [
                     ApiService.SetCredentials($scope.username, $scope.password);
                     ApiService.GetData(function(response) {
                         dataShare.sendData(response); // share data with app
-                        $location.path('/main');
+                        $location.path('/');
                     });
                 } else {
                     $scope.formInvalid = true;

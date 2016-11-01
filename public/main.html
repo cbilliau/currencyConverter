@@ -6,7 +6,7 @@
       <span><b>User:</b>  {{data.username}}</span>
       <select class="button-large pure-button right"
       ng-model="currencyItemAdd"
-      ng-change="currencyAdd()";
+      ng-change="currencyAdd()"
       ng-options="getKey(country) + country[getKey(country)] as country[getKey(country)] for country in countries">
         <option value="">Add Currency</option>
       </select>
