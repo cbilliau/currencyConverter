@@ -32,7 +32,7 @@
       <div class="pure-u-1-7"><p>{{ data.currency }}</p></div>
       <div class="pure-u-1-7"><p ng-show="data.history && historyDate.date">{{ (((data.rate - data.history)/data.rate)*100) | number :1 }}% {{historyDate.date}}
         <span  ng-if="(((data.rate - data.history)/data.rate)*100) > 0"><img src="/assets/uparrow.png" alt="up arrow"/></span>
-        <span ng-if="(((data.rate - data.history)/data.rate)*100) < 0"><img src="/assets/downarrowred.png" alt="down arrow" /></span>A
+        <span ng-if="(((data.rate - data.history)/data.rate)*100) < 0"><img src="/assets/downarrowred.png" alt="down arrow" /></span>
         </p></div>
       <div class="pure-u-1-7"><p>{{ data.rate | number }}</p></div>
       <div class="pure-u-1-7"><input ng-model='amount' placeholder="Enter amount here" value ="1.00" type="number"></div>
