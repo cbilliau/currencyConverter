@@ -30,9 +30,12 @@
   <div ng-repeat="data in userData" class="pure-g custom-text-center fade">
       <img class="pure-u-1-7 flag" src='http://www.geonames.org/flags/x/{{ data.flag | lowercase | limitTo:2 }}.gif'/>
       <div class="pure-u-1-7"><p>{{ data.currency }}</p></div>
-        <div class="pure-u-1-7"><p ng-show="data.history && historyDate.date">{{ (((data.rate - data.history)/data.rate)*100) | number :1 }}% {{historyDate.date}}</p></div>
-        <div class="pure-u-1-7"><p>{{ data.rate | number }}</p></div>
-      <div class="pure-u-1-7"><input ng-model='amount' placeholder="0.00" type="number"></div>
+      <div class="pure-u-1-7"><p ng-show="data.history && historyDate.date">{{ (((data.rate - data.history)/data.rate)*100) | number :1 }}% {{historyDate.date}}
+        <span  ng-if="(((data.rate - data.history)/data.rate)*100) > 0"><img src="/assets/uparrow.png" alt="up arrow"/></span>
+        <span ng-if="(((data.rate - data.history)/data.rate)*100) < 0"><img src="/assets/downarrowred.png" alt="down arrow" /></span>A
+        </p></div>
+      <div class="pure-u-1-7"><p>{{ data.rate | number }}</p></div>
+      <div class="pure-u-1-7"><input ng-model='amount' placeholder="Enter amount here" value ="1.00" type="number"></div>
       <div class="pure-u-1-7"><p>{{ amount / data.rate | currency}}</p></div>
       <div class="pure-u-1-7"><button class="button-small pure-button pure-button-secondary" ng-model="currencyItemRemove" ng-click="currencyRemove(data)">Remove</button></div>
   </div>
@@ -40,7 +43,12 @@
   <!-- instructions -->
   <div class="instructions" ng-show="inst">
     <br>
-    <p><b>Instructions:</b> Use 'Add Currency' drop down menu to add currenies to your account. Remove currencies by using the 'Remove' button. All conversion are to U.S. Dollar.
+    <p><b>Instructions:</b>
+      <br>Use 'Add Currency' drop down menu to add currenies to your account.
+      <br>Remove currencies by using the 'Remove' button. All conversion are to U.S. Dollar.
+      <br>To convert a currency, enter an amount in the text box under the Amount column.
+      <br>Display historical change percentage by clicking the Change column dropdwon and choosing a date span.
+      <br>Percentages are displayed as positive and only show anegative symbol if negative.
     </p>
   </div>
 
