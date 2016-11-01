@@ -15,42 +15,40 @@ viewsModule.controller('MainController', [
         // var
         var currencyRates;
 
-        $scope.countries = {
-            AUD: "Australian Dollar",
-            BGN: "Bulgarian Lev",
-            BRL: "Brazilian Real",
-            CAD: "Canadian Dollar",
-            CHF: "Swiss Franc",
-            CNY: "Chinese Yuan",
-            CZK: "Czech Republic Koruna",
-            DKK: "Danish Krone",
-            EUR: "Euro",
-            GBP: "British Pound Sterling",
-            HKD: "Hong Kong Dollar",
-            HRK: "Croatian Kuna",
-            HUF: "Hungarian Forint",
-            IDR: "Indonesian Rupiah",
-            ILS: "Israeli New Sheqel",
-            INR: "Indian Rupee",
-            JPY: "Japanese Yen",
-            KRW: "South Korean Won",
-            MXN: "Mexican Peso",
-            MYR: "Malaysian Ringgit",
-            MZN: "Mozambican Metical",
-            NOK: "Norwegian Krone",
-            NPR: "Nepalese Rupee",
-            NZD: "New Zealand Dollar",
-            PHP: "Philippine Peso",
-            PLN: "Polish Zloty",
-            RON: "Romanian Leu",
-            RUB: "Russian Ruble",
-            RWF: "Rwandan Franc",
-            SEK: "Swedish Krona",
-            SGD: "Singapore Dollar",
-            THB: "Thai Baht",
-            TRY: "Turkish Lira",
-            ZAR: "South African Rand"
-        }; //
+        $scope.getKey = function(country) {
+            return Object.keys(country)[0];
+        }
+
+        $scope.countries = [
+            {AUD: "Australian Dollar"},
+            {BGN: "Bulgarian Lev"},
+            {BRL: "Brazilian Real"},
+            {CAD: "Canadian Dollar"},
+            {CHF: "Swiss Franc"},
+            {CNY: "Chinese Yuan"},
+            {CZK: "Czech Republic Koruna"},
+            {DKK: "Danish Krone"},
+            {EUR: "Euro"},
+            {GBP: "British Pound Sterling"},
+            {HKD: "Hong Kong Dollar"},
+            {HRK: "Croatian Kuna"},
+            {HUF: "Hungarian Forint"},
+            {ILS: "Israeli New Sheqel"},
+            {INR: "Indian Rupee"},
+            {JPY: "Japanese Yen"},
+            {KRW: "South Korean Won"},
+            {MXN: "Mexican Peso"},
+            {MYR: "Malaysian Ringgit"},
+            {NOK: "Norwegian Krone"},
+            {NZD: "New Zealand Dollar"},
+            {PLN: "Polish Zloty"},
+            {RON: "Romanian Leu"},
+            {RUB: "Russian Ruble"},
+            {SEK: "Swedish Krona"},
+            {SGD: "Singapore Dollar"},
+            {TRY: "Turkish Lira"},
+            {ZAR: "South African Rand"}
+        ];
 
         var historyList = [
             {
