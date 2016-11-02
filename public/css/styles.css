@@ -62,7 +62,7 @@
 .custom-text-center {
     text-align: center;
     display: flex;
-    justify-content: center;
+    justify-content: left;
     align-items: center;
 }
 

@@ -8,7 +8,7 @@ angular.module('curAppLib', [])
         this.data = data;
         $timeout(function() {
             $rootScope.$broadcast('data_shared');
-        }, 100);
+        }, 500);
     };
     service.getData = function() {
         return this.data;
